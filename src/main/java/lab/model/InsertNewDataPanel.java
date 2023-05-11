@@ -71,11 +71,11 @@ public class InsertNewDataPanel extends JFrame {
         JLabel addressLabel3 = new JLabel("CAP:"); // crea una label per l'indirizzo
         JLabel birthLabel = new JLabel("Data di nascita (2000/12/27):"); // crea una label per la data di nascita
         JLabel selectionLabel = new JLabel("Figura da inserire"); // 
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
+        
         dateFormat.setLenient(false); // rendi il formato non tollerante alle date non valide
         birthField = new JFormattedTextField(dateFormat); // crea la textbox formattata con il formato di data
-        comboBox.addItem("Iscritto"); // aggiungi la prima opzione alla JComboBox
         comboBox.addItem("Allenatore"); // aggiungi la seconda opzione alla JComboBox
+        comboBox.addItem("Iscritto"); // aggiungi la prima opzione alla JComboBox
         comboBox.addItem("Autista"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Preparatore"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
@@ -131,8 +131,8 @@ public class InsertNewDataPanel extends JFrame {
         String selectedTable = comboBox.getSelectedItem().toString();
         switch (selectedTable) {
             case "Autista": addAutista() ;break;
-            case "Preparatore": addPreparatore() ;break;
-            default: addIscritto();
+            case "Iscritto": addIscritto(); ;break;
+            default:  addPreparatoreAllenatore(selectedTable) ;
                 break;
         }
         
@@ -167,10 +167,10 @@ public class InsertNewDataPanel extends JFrame {
        
     }
 
-    private void addPreparatore() {
+    private void addPreparatoreAllenatore(String person) {
         try {
             s = conn.createStatement();
-             s.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
+             s.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
             "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
             birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
             +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"');");
@@ -187,17 +187,27 @@ public class InsertNewDataPanel extends JFrame {
             DriverLabel.setVisible(true);
            
         }
-        else if(comboBox.getSelectedItem()=="Iscritto") {
-
-           subscrictionLabel.setVisible(true);
+        else {
+            driverField.setVisible(false);
+            DriverLabel.setVisible(false);
+        }
+        if(comboBox.getSelectedItem()=="Iscritto") {
+        subscrictionLabel.setVisible(true);
         subscrictionField.setVisible(true);
         categoryField.setVisible(true);
         categoriaLabel.setVisible(true);
         codTesseraField.setVisible(true);
-        tesseraLabel.setVisible(true);
-           
+        tesseraLabel.setVisible(true);   
         }
-        else if (comboBox.getSelectedItem() == "Squadra") {
+        else {
+            subscrictionLabel.setVisible(false);
+            subscrictionField.setVisible(false);
+            categoryField.setVisible(false);
+            categoriaLabel.setVisible(false);
+            codTesseraField.setVisible(false);
+            tesseraLabel.setVisible(false);   
+        }
+        if (comboBox.getSelectedItem() == "Squadra") {
             panel.removeAll();
             panel.setLayout( new BorderLayout());
             JComboBox<String> sportSelectionBox = new JComboBox<>();
@@ -237,9 +247,6 @@ public class InsertNewDataPanel extends JFrame {
             panel.revalidate();
             panel.repaint();
         }
-        else {
-            driverField.setVisible(false);
-            DriverLabel.setVisible(false);
-        }
+        
     }
 }

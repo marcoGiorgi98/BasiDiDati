@@ -18,7 +18,7 @@ public class App {
         ResultSet r;
         try {
              s = conn.createStatement();
-             r = s.executeQuery("Select * from iscritto");
+             r = s.executeQuery("Select * from Allenatore");
              while(r.next()){
                 int numCol = r.getMetaData().getColumnCount();
                 for ( int i = 1 ; i <= numCol ; i++ )
