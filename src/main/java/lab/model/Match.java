@@ -81,7 +81,8 @@ public class Match extends JPanel{
             s = conn.createStatement();
             s.executeUpdate(
                 "INSERT INTO Partita (CodPartita, CodSquadra, Data,  Città, Via,Cap, Numero,Avversario,Risultato,CF_Preparatore)"+
-               "VALUES ('"+cod_match_Field.getText().toUpperCase()+"', '"+teamCodField.getText()+"', '"+dateField.getText()
+               "VALUES ('"+cod_match_Field.getText().toUpperCase()+"', '"+teamCodField.getText().toUpperCase()
+               +"', '"+dateField.getText()
                +"', '"+cityField.getText()
                +"', '"+viaField.getText()+"', '"+capField.getText()
                +"', '"+numberField.getText()+"', '"+avversarioField.getText()

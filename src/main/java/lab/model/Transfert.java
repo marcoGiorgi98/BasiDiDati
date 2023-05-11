@@ -92,7 +92,7 @@ public class Transfert extends JPanel{
                +"', '"+dateDeparture.getText()
                +"', '"+dateArrive.getText()+"', '"+cityField.getText()
                +"', '"+viaField.getText()+"', '"+capField.getText()
-               +"', '"+numberField.getText()+"', '"+codMatchField.getText().toUpperCase()+"');");
+               +"', '"+numberField.getText()+"', '"+codMatchField.getText().toUpperCase()+"', '"+targaField.getText().toUpperCase()+"');");
         } catch (SQLException e) {
             e.printStackTrace();
         }
