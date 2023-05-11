@@ -1,18 +1,14 @@
 package lab.db.tables;
 
  import java.sql.Connection;
- import java.sql.PreparedStatement;
  import java.sql.ResultSet;
  import java.sql.Statement;
  import java.sql.SQLException;
- import java.sql.SQLIntegrityConstraintViolationException;
- import java.util.ArrayList;
  import java.util.Date;
  import java.util.List;
  import java.util.Objects;
  import java.util.Optional;
 
- import lab.utils.Utils;
  import lab.db.Table;
  import lab.model.Student;
 
