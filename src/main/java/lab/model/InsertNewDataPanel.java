@@ -88,6 +88,7 @@ public class InsertNewDataPanel extends JFrame {
         comboBox.addItem("Autista"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Preparatore"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
+        comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
         comboBox.setEditable(false); // rendi la JComboBox non modificabile
         panel.add(selectionLabel);
         panel.add(comboBox); // aggiungi la JComboBox al panel nell'undicesima cella
@@ -239,6 +240,16 @@ public class InsertNewDataPanel extends JFrame {
             categoriaLabel.setVisible(false);
             codTesseraField.setVisible(false);
             tesseraLabel.setVisible(false);   
+        }
+        if(comboBox.getSelectedItem()=="Partita") {
+            //this.removeAll();
+            this.remove(panel);
+            //panel.revalidate();
+            Match scontro = new Match();
+           // this.panel=scontro;
+            add(scontro, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+            revalidate();
+            repaint();
         }
         if (comboBox.getSelectedItem() == "Squadra") {
             panel.removeAll();
