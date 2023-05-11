@@ -42,6 +42,7 @@ public class InsertNewDataPanel extends JFrame {
     LinkedList<JCheckBox> allenatoriList= new LinkedList<JCheckBox>();
     LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
 
+    Match scontro;
     JPanel panel = new JPanel(); // crea un panel
     JPanel panelSuperiore= new JPanel();
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
@@ -146,6 +147,7 @@ public class InsertNewDataPanel extends JFrame {
             case "Autista": addAutista() ;break;
             case "Iscritto": addIscritto(); ;break;
             case "Squadra": addSquadra() ;break;
+            case "Partita": scontro.callQuery() ;break;
             default:  addPreparatoreAllenatore(selectedTable) ;
                 break;
         }
@@ -245,11 +247,8 @@ public class InsertNewDataPanel extends JFrame {
             tesseraLabel.setVisible(false);   
         }
         if(comboBox.getSelectedItem()=="Partita") {
-            //this.removeAll();
             this.remove(panel);
-            //panel.revalidate();
-            Match scontro = new Match();
-           // this.panel=scontro;
+            scontro = new Match();
             add(scontro, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
