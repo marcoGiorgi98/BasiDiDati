@@ -87,17 +87,24 @@ public class ViewDataPanel  extends JFrame {
     }
 
     private void executeQuery() {
+        PreparedStatement pS;
+        ResultSet rs;
 
         try {
             ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
         
             String sSQL = "SELECT * FROM ?";
-            PreparedStatement pS = conn.prepareStatement(sSQL);
-            pS.setString(1,comboBox.getSelectedItem().toString().toLowerCase());
-           
-         
-            ResultSet rs = pS.executeQuery( sSQL.replace("?",comboBox.getSelectedItem().toString().toLowerCase()));
+            if(comboBox.getSelectedItem().toString().toLowerCase().equals("iscritto")) {
+                sSQL = "SELECT CF , I.Nome , Cognome , S.Nome as Squadra ,S.Sport"+
+                " from iscritto I JOIN squadra S ON I.CodSquadra = S.CodSquadra";
+                pS = conn.prepareStatement(sSQL);
+                rs = pS.executeQuery();
+            }
+            else {
+                pS = conn.prepareStatement(sSQL);
+                rs = pS.executeQuery(sSQL.replace("?",comboBox.getSelectedItem().toString().toLowerCase()));
+            }
             
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
