@@ -18,14 +18,8 @@ public class App {
         ResultSet r;
         try {
              s = conn.createStatement();
-             r = s.executeQuery("Select * from iscritto");
-             while(r.next()){
-                int numCol = r.getMetaData().getColumnCount();
-                for ( int i = 1 ; i <= numCol ; i++ )
-                { // I numeri di colonna iniziano da 1.
-                    System.out.println( "COL" + i + "=" +r.getObject(i));
-                } 
-             }
+            // s.executeUpdate("UPDATE iscritto SET CodSquadra = NULL");
+             
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

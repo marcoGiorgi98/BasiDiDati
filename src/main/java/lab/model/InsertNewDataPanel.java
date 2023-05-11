@@ -195,7 +195,9 @@ public class InsertNewDataPanel extends JFrame {
         giocatoriList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
             try {
                 s = conn.createStatement();
-                s.executeUpdate("UPDATE iscritto SET Squadra = "+"'"+nomeSquadra.getText()+"'"+"WHERE iscritto.CF = "+"'"+"LDG573JG94HR1DTG"+"'");
+                s.executeUpdate("UPDATE iscritto SET CodSquadra = "+"'"
+                +codSquadra.getText()+"'"+"WHERE iscritto.CF = "
+                +"'"+giocatore.getText()+"'");
               
           } catch (SQLException e) {
               e.printStackTrace();
