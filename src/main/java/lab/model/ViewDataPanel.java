@@ -38,6 +38,7 @@ public class ViewDataPanel  extends JFrame {
        comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
        comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
        comboBox.addItem("Trasferta"); // aggiungi la seconda opzione alla JComboBox
+       comboBox.addItem("Allenamento"); // aggiungi la seconda opzione alla JComboBox
 
        // Creo il bottone per eseguire la query
        executeButton = new JButton("Execute");
