@@ -71,15 +71,7 @@ public class Match extends JPanel{
         
         dateFormat.setLenient(false); // rendi il formato non tollerante alle date non valide
         dateField = new JFormattedTextField(dateFormat); // crea la textbox formattata con il formato di data
-        comboBox.addItem("Allenatore"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Iscritto"); // aggiungi la prima opzione alla JComboBox
-        comboBox.addItem("Autista"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Preparatore"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.setEditable(false); // rendi la JComboBox non modificabile
-        this.add(selectionLabel);
-        this.add(comboBox); // aggiungi la JComboBox al panel nell'undicesima cella
+
         this.add( cod_match_Label);
         this.add(cod_match_Field);
         this.add(teamCodLabel); // aggiungi la label del nome al panel nella prima cella

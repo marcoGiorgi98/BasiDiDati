@@ -43,6 +43,7 @@ public class InsertNewDataPanel extends JFrame {
     LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
 
     JPanel panel = new JPanel(); // crea un panel
+    JPanel panelSuperiore= new JPanel();
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
     Connection conn= prov.getMySQLConnection();
     Statement s;
@@ -70,6 +71,7 @@ public class InsertNewDataPanel extends JFrame {
         setTitle("Inserisci nuovi Dati");
     
         panel.setLayout(new GridLayout(14, 2)); // usa GridLayout con 7 righe e 2 colonne
+        panelSuperiore.setLayout(new GridLayout(1, 2));
         JLabel cFLabel = new JLabel("Codice Fiscale:"); // crea una label per il nome
         JLabel nameLabel = new JLabel("Nome:"); // crea una label per il nome
         JLabel surnameLabel = new JLabel("Cognome:"); // crea una label per il cognome
@@ -90,8 +92,8 @@ public class InsertNewDataPanel extends JFrame {
         comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
         comboBox.setEditable(false); // rendi la JComboBox non modificabile
-        panel.add(selectionLabel);
-        panel.add(comboBox); // aggiungi la JComboBox al panel nell'undicesima cella
+        panelSuperiore.add(selectionLabel);
+        panelSuperiore.add(comboBox); // aggiungi la JComboBox al panel nell'undicesima cella
         panel.add( cFLabel);
         panel.add(cFField);
         panel.add(nameLabel); // aggiungi la label del nome al panel nella prima cella
@@ -132,6 +134,7 @@ public class InsertNewDataPanel extends JFrame {
         driverField.setVisible(false);
         DriverLabel.setVisible(false);
         add(panel, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+        add(panelSuperiore, BorderLayout.NORTH); // aggiungi il panel al frame al centro
         add(button, BorderLayout.SOUTH); // aggiungi il bottone al frame a sud
         pack(); // imposta la dimensione del frame in base al suo contenuto
         setVisible(true); // mostra il frame
