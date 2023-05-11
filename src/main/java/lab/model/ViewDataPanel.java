@@ -9,6 +9,8 @@ import lab.db.ConnectionProvider;
 
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 public class ViewDataPanel  extends JFrame {
 
     // Variabili per la connessione al database
@@ -23,6 +25,7 @@ public class ViewDataPanel  extends JFrame {
     JPanel panel = new JPanel(); // crea un panel
 
     private JComboBox<String> comboBox = new JComboBox<>(); // crea una JComboBox
+    private JComboBox<String> comboBoxSports = new JComboBox<>(); // crea una JComboBox
 
     public ViewDataPanel() {
        // Creo la finestra principal 
@@ -41,9 +44,28 @@ public class ViewDataPanel  extends JFrame {
        comboBox.addItem("Allenamento"); // aggiungi la seconda opzione alla JComboBox
        comboBox.addItem("Fare"); // aggiungi la seconda opzione alla JComboBox
 
+        comboBoxSports.addItem("Calcio"); // aggiungi la prima opzione alla JComboBox
+        comboBoxSports.addItem("Pallavolo"); // aggiungi la seconda opzione alla JComboBox
+        comboBoxSports.addItem("Basket"); // aggiungi la seconda opzione alla JComboBox
+        comboBoxSports.addItem("Baseball"); // aggiungi la seconda opzione alla JComboBox
+
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                checkComboBoxInput();
+            }
+            
+        });
        // Creo il bottone per eseguire la query
        executeButton = new JButton("Execute");
-       executeButton.addActionListener(e -> executeQuery()); // Aggiungo un listener che chiama il metodo executeQuery quando il bottone viene premuto
+       executeButton.addActionListener(e ->{
+        if(comboBox.getSelectedItem().toString().toLowerCase().equals("partita")){
+           executeQueryMatch();
+        }
+        else{
+            executeQuery();
+        }
+       } ); // Aggiungo un listener che chiama il metodo executeQuery quando il bottone viene premuto
 
        // Creo la tabella per i risultati (inizialmente vuota)
        resultTable = new JTable();
@@ -54,6 +76,8 @@ public class ViewDataPanel  extends JFrame {
        // Aggiungo i componenti alla finestra
        panel.add(textLabel);
        panel.add(comboBox);
+       panel.add(comboBoxSports);
+       comboBoxSports.setVisible(false);
 
        // Imposto la dimensione e la visibilità della finestra
        add(panel, BorderLayout.NORTH); // aggiungi il panel al frame al centro
@@ -63,6 +87,7 @@ public class ViewDataPanel  extends JFrame {
     }
 
     private void executeQuery() {
+
         try {
             ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
@@ -94,14 +119,59 @@ public class ViewDataPanel  extends JFrame {
             scrollPane = new JScrollPane(resultTable);
             scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
             add(scrollPane, BorderLayout.CENTER); // aggiungi il panel al frame al centro
-           // panel.repaint();
-            
-
-            
+               
         } catch (SQLException ex) {
             // In caso di eccezione, mostro un messaggio di errore
             JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void executeQueryMatch() {
+        
+        try {
+            ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
+            Connection conn= prov.getMySQLConnection();
+            
+            String sSQL = "SELECT P.CodPartita,P.CodSquadra,P.Data,P.Città,P.Via,P.Cap,P.Numero,P.Avversario,P.CF_Preparatore,S.CF_Allenatore,P.Risultato"+
+            " FROM partita P JOIN squadra S ON P.CodSquadra = S.CodSquadra WHERE S.Sport = ?";
+            PreparedStatement pS = conn.prepareStatement(sSQL);
+            pS.setString(1,comboBoxSports.getSelectedItem().toString().toLowerCase());
+            System.out.println(pS);
+         
+            ResultSet rs = pS.executeQuery();
+            System.out.println(pS);
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            DefaultTableModel tableModel = new DefaultTableModel();
+            for (int i = 1; i <= columnCount; i++) {
+                tableModel.addColumn(metaData.getColumnName(i));
+            }
+
+            while (rs.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = rs.getObject(i);
+                }
+                tableModel.addRow(rowData);
+            }
+            
+            panel.revalidate();
+            this.resultTable = new JTable(tableModel);
+            scrollPane = new JScrollPane(resultTable);
+            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
+            add(scrollPane, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+               
+        } catch (SQLException ex) {
+            // In caso di eccezione, mostro un messaggio di errore
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void checkComboBoxInput() {
+        if(comboBox.getSelectedItem().toString().toLowerCase().equals("partita")) {
+            comboBoxSports.setVisible(true);
+        }
+        else  comboBoxSports.setVisible(false);
     }
 }
 
