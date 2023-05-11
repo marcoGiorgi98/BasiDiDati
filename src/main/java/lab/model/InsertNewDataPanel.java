@@ -11,6 +11,8 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class InsertNewDataPanel extends JFrame {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
+
     private JComboBox<String> comboBox = new JComboBox<>(); // crea una JComboBox
     private JTextField cFField = new JTextField(10); // crea una textbox di 10 caratteri per il nome
     private JTextField nameField = new JTextField(10); // crea una textbox di 10 caratteri per il nome
@@ -21,9 +23,16 @@ public class InsertNewDataPanel extends JFrame {
     private JTextField numberField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
     private JTextField capField = new JTextField(5); // crea una textbox di 10 caratteri per l'indirizzo
     private JTextField driverField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
+    private JTextField codTesseraField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
+    private JTextField categoryField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
+    //private JTextField subField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
+    JLabel tesseraLabel = new JLabel("Codice Tessera"); // 
+    JLabel categoriaLabel = new JLabel("Categoria"); // 
+    private JFormattedTextField subscrictionField = new JFormattedTextField(dateFormat); 
     private JFormattedTextField birthField; // crea una textbox formattata per la data di nascita
     private JButton button = new JButton("Invia"); // crea un bottone con il testo "Invia"
     JLabel DriverLabel = new JLabel("Numero Patente"); // 
+    JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); // 
     JPanel panel = new JPanel(); // crea un panel
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
     Connection conn= prov.getMySQLConnection();
@@ -50,8 +59,8 @@ public class InsertNewDataPanel extends JFrame {
 
     private void mainInterface(int width, int height) {
         setTitle("Inserisci nuovi Dati");
-       // JPanel panel = new JPanel(); // crea un panel
-        panel.setLayout(new GridLayout(12, 2)); // usa GridLayout con 7 righe e 2 colonne
+    
+        panel.setLayout(new GridLayout(14, 2)); // usa GridLayout con 7 righe e 2 colonne
         JLabel cFLabel = new JLabel("Codice Fiscale:"); // crea una label per il nome
         JLabel nameLabel = new JLabel("Nome:"); // crea una label per il nome
         JLabel surnameLabel = new JLabel("Cognome:"); // crea una label per il cognome
@@ -62,7 +71,7 @@ public class InsertNewDataPanel extends JFrame {
         JLabel addressLabel3 = new JLabel("CAP:"); // crea una label per l'indirizzo
         JLabel birthLabel = new JLabel("Data di nascita (2000/12/27):"); // crea una label per la data di nascita
         JLabel selectionLabel = new JLabel("Figura da inserire"); // 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
         dateFormat.setLenient(false); // rendi il formato non tollerante alle date non valide
         birthField = new JFormattedTextField(dateFormat); // crea la textbox formattata con il formato di data
         comboBox.addItem("Iscritto"); // aggiungi la prima opzione alla JComboBox
@@ -94,6 +103,22 @@ public class InsertNewDataPanel extends JFrame {
 
         panel.add(DriverLabel); // aggiungi la label dell'indirizzo al panel nella settima cella
         panel.add(driverField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
+
+       
+        panel.add(tesseraLabel);
+        panel.add(codTesseraField);
+        panel.add(categoriaLabel);
+        panel.add(categoryField);
+        panel.add(subscrictionLabel);
+        panel.add(subscrictionField);
+        subscrictionLabel.setVisible(false);
+        subscrictionField.setVisible(false);
+        categoryField.setVisible(false);
+        categoriaLabel.setVisible(false);
+        codTesseraField.setVisible(false);
+        tesseraLabel.setVisible(false);
+
+
         driverField.setVisible(false);
         DriverLabel.setVisible(false);
         add(panel, BorderLayout.CENTER); // aggiungi il panel al frame al centro
@@ -112,12 +137,19 @@ public class InsertNewDataPanel extends JFrame {
         
     }
 
-    private String addIscritto() {
-       
-        return "INSERT INTO iscritto (CF, Name, Surname, Telephone, Birthday, Address, Number, Cap, City)"+
-        "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
-        phoneField.getText()+"', '"+birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
-        +"', '"+capField.getText()+"', '"+cityField.getText()+");";
+    private void addIscritto() {
+        try {
+        s = conn.createStatement();
+        s.executeUpdate(
+         "INSERT INTO iscritto (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono,Categoria,DataIscrizione,CodTessera)"+
+        "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+birthField.getText()
+        +"', '"+viaField.getText()+"', '"+numberField.getText()
+        +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+categoryField.getText().toUpperCase()
+        +"', '"+subscrictionField.getText()+"', '"+codTesseraField.getText().toUpperCase()+"');");
+
+        } catch (SQLException e) {
+        e.printStackTrace();
+        }
     }
 
     private void addAutista() {
@@ -138,6 +170,16 @@ public class InsertNewDataPanel extends JFrame {
         if(comboBox.getSelectedItem()=="Autista") {
             driverField.setVisible(true);
             DriverLabel.setVisible(true);
+           
+        }
+        else if(comboBox.getSelectedItem()=="Iscritto") {
+
+           subscrictionLabel.setVisible(true);
+        subscrictionField.setVisible(true);
+        categoryField.setVisible(true);
+        categoriaLabel.setVisible(true);
+        codTesseraField.setVisible(true);
+        tesseraLabel.setVisible(true);
            
         }
         else if (comboBox.getSelectedItem() == "Squadra") {
