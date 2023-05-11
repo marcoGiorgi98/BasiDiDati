@@ -101,6 +101,13 @@ public class ViewDataPanel  extends JFrame {
                 pS = conn.prepareStatement(sSQL);
                 rs = pS.executeQuery();
             }
+           else if(comboBox.getSelectedItem().toString().toLowerCase().equals("squadra")) {
+                sSQL = "SELECT CF , I.Nome , Cognome , S.Nome as Squadra ,S.CodSquadra, S.Sport"+
+               " from iscritto I JOIN squadra S ON I.CodSquadra = S.CodSquadra" ;
+                pS = conn.prepareStatement(sSQL);
+                rs = pS.executeQuery();
+              
+            }
             else {
                 pS = conn.prepareStatement(sSQL);
                 rs = pS.executeQuery(sSQL.replace("?",comboBox.getSelectedItem().toString().toLowerCase()));
