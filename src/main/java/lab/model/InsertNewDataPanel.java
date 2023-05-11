@@ -37,8 +37,10 @@ public class InsertNewDataPanel extends JFrame {
 
     JComboBox<String> sportSelectionBox = new JComboBox<>();   //sport da scegliere per una squadra
     JTextField nomeSquadra = new JTextField();
-    JTextField categoriaSquadra = new JTextField();
+    JTextField codSquadra = new JTextField();
     JPanel pannelloAllenatori = new JPanel(new GridLayout(40, 1));
+    LinkedList<JCheckBox> allenatoriList= new LinkedList<JCheckBox>();
+    LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
 
     JPanel panel = new JPanel(); // crea un panel
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
@@ -190,11 +192,20 @@ public class InsertNewDataPanel extends JFrame {
     }
 
     private void addSquadra() {
+        giocatoriList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
+            try {
+                s = conn.createStatement();
+                s.executeUpdate("UPDATE iscritto SET Squadra = "+"'"+nomeSquadra.getText()+"'"+"WHERE iscritto.CF = "+"'"+"LDG573JG94HR1DTG"+"'");
+              
+          } catch (SQLException e) {
+              e.printStackTrace();
+          }
+        });
         try {
             s = conn.createStatement();
              s.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
-            "VALUES ('"+nomeSquadra.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString()
-            +"', '"+pannelloAllenatori +"');");
+            "VALUES ('"+codSquadra.getText()+"', '"+nomeSquadra.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString()
+            +"', '"+allenatoriList.stream().filter(x -> x.isSelected()).findFirst().get().getText() +"');");
            
        } catch (SQLException e) {
            e.printStackTrace();
@@ -238,10 +249,10 @@ public class InsertNewDataPanel extends JFrame {
             JPanel pannelloSuperiore = new JPanel(new GridLayout(2, 3));
             pannelloSuperiore.add( sportSelectionBox);
             pannelloSuperiore.add(new JLabel("Inserisci nome squadra"));
-            pannelloSuperiore.add(new JLabel("Inserisci la Categoria"));
+            pannelloSuperiore.add(new JLabel("Inserisci il codice Squadra"));
             pannelloSuperiore.add(new JLabel("Seleziona i giocatori"));
             pannelloSuperiore.add(nomeSquadra);
-            pannelloSuperiore.add(categoriaSquadra);
+            pannelloSuperiore.add(codSquadra);
 
             JPanel pannelloDestra = new JPanel(new GridLayout(2, 1));
             pannelloDestra.add(new JLabel("Seleziona nome dell'allenatore"));
@@ -253,7 +264,7 @@ public class InsertNewDataPanel extends JFrame {
                     Statement s = conn.createStatement();
                     ResultSet rs = s.executeQuery("Select * from allenatore");
                 while(rs.next()){
-                    LinkedList<JCheckBox> allenatoriList= new LinkedList<JCheckBox>();
+                    
                     allenatoriList.add(new JCheckBox(rs.getObject(1).toString()));
                     for (JCheckBox jCheckBox : allenatoriList) {
                         pannelloAllenatori.add(jCheckBox);
@@ -273,7 +284,7 @@ public class InsertNewDataPanel extends JFrame {
                 Statement s = conn.createStatement();
                 ResultSet rs = s.executeQuery("Select * from iscritto");
             while(rs.next()){
-                LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
+            
                 giocatoriList.add(new JCheckBox(rs.getObject(1).toString()));
                 for (JCheckBox jCheckBox : giocatoriList) {
                     pannelloGiocatori.add(jCheckBox);
