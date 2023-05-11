@@ -131,6 +131,7 @@ public class InsertNewDataPanel extends JFrame {
         String selectedTable = comboBox.getSelectedItem().toString();
         switch (selectedTable) {
             case "Autista": addAutista() ;break;
+            case "Preparatore": addPreparatore() ;break;
             default: addIscritto();
                 break;
         }
@@ -159,6 +160,20 @@ public class InsertNewDataPanel extends JFrame {
             "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
             birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
             +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+driverField.getText()+"');");
+           
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       
+    }
+
+    private void addPreparatore() {
+        try {
+            s = conn.createStatement();
+             s.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
+            "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
+            birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
+            +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"');");
            
        } catch (SQLException e) {
            e.printStackTrace();
