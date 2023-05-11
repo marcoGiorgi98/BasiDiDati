@@ -43,6 +43,7 @@ public class InsertNewDataPanel extends JFrame {
     LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
 
     Match scontro;
+    Transfert transfert;
     JPanel panel = new JPanel(); // crea un panel
     JPanel panelSuperiore= new JPanel();
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
@@ -92,6 +93,7 @@ public class InsertNewDataPanel extends JFrame {
         comboBox.addItem("Preparatore"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
+        comboBox.addItem("Trasferta"); // aggiungi la seconda opzione alla JComboBox
         comboBox.setEditable(false); // rendi la JComboBox non modificabile
         panelSuperiore.add(selectionLabel);
         panelSuperiore.add(comboBox); // aggiungi la JComboBox al panel nell'undicesima cella
@@ -148,6 +150,7 @@ public class InsertNewDataPanel extends JFrame {
             case "Iscritto": addIscritto(); ;break;
             case "Squadra": addSquadra() ;break;
             case "Partita": scontro.callQuery() ;break;
+            case "Trasferta": transfert.callQuery() ;break;
             default:  addPreparatoreAllenatore(selectedTable) ;
                 break;
         }
@@ -250,6 +253,13 @@ public class InsertNewDataPanel extends JFrame {
             this.remove(panel);
             scontro = new Match();
             add(scontro, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+            revalidate();
+            repaint();
+        }
+        if(comboBox.getSelectedItem()=="Trasferta") {
+            this.remove(panel);
+            transfert = new Transfert();
+            add(transfert, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
         }
