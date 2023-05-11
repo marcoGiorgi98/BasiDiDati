@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 
 public class InsertNewDataPanel extends JFrame {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
@@ -25,7 +26,7 @@ public class InsertNewDataPanel extends JFrame {
     private JTextField driverField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
     private JTextField codTesseraField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
     private JTextField categoryField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    //private JTextField subField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
+
     JLabel tesseraLabel = new JLabel("Codice Tessera"); // 
     JLabel categoriaLabel = new JLabel("Categoria"); // 
     private JFormattedTextField subscrictionField = new JFormattedTextField(dateFormat); 
@@ -33,6 +34,12 @@ public class InsertNewDataPanel extends JFrame {
     private JButton button = new JButton("Invia"); // crea un bottone con il testo "Invia"
     JLabel DriverLabel = new JLabel("Numero Patente"); // 
     JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); // 
+
+    JComboBox<String> sportSelectionBox = new JComboBox<>();   //sport da scegliere per una squadra
+    JTextField nomeSquadra = new JTextField();
+    JTextField categoriaSquadra = new JTextField();
+    JPanel pannelloAllenatori = new JPanel(new GridLayout(40, 1));
+
     JPanel panel = new JPanel(); // crea un panel
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
     Connection conn= prov.getMySQLConnection();
@@ -132,6 +139,7 @@ public class InsertNewDataPanel extends JFrame {
         switch (selectedTable) {
             case "Autista": addAutista() ;break;
             case "Iscritto": addIscritto(); ;break;
+            case "Squadra": addSquadra() ;break;
             default:  addPreparatoreAllenatore(selectedTable) ;
                 break;
         }
@@ -181,6 +189,18 @@ public class InsertNewDataPanel extends JFrame {
        
     }
 
+    private void addSquadra() {
+        try {
+            s = conn.createStatement();
+             s.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
+            "VALUES ('"+nomeSquadra.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString()
+            +"', '"+pannelloAllenatori +"');");
+           
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+    }
+
     private void checkComboBoxInput() {
         if(comboBox.getSelectedItem()=="Autista") {
             driverField.setVisible(true);
@@ -210,13 +230,11 @@ public class InsertNewDataPanel extends JFrame {
         if (comboBox.getSelectedItem() == "Squadra") {
             panel.removeAll();
             panel.setLayout( new BorderLayout());
-            JComboBox<String> sportSelectionBox = new JComboBox<>();
+           
             sportSelectionBox.addItem("Calcio");
             sportSelectionBox.addItem("Basket");
             sportSelectionBox.addItem("Pallavolo");
             sportSelectionBox.addItem("BaseBall");
-            JTextField nomeSquadra = new JTextField();
-            JTextField categoriaSquadra = new JTextField();
             JPanel pannelloSuperiore = new JPanel(new GridLayout(2, 3));
             pannelloSuperiore.add( sportSelectionBox);
             pannelloSuperiore.add(new JLabel("Inserisci nome squadra"));
@@ -227,18 +245,42 @@ public class InsertNewDataPanel extends JFrame {
 
             JPanel pannelloDestra = new JPanel(new GridLayout(2, 1));
             pannelloDestra.add(new JLabel("Seleziona nome dell'allenatore"));
-            JPanel pannelloAllenatori = new JPanel(new GridLayout(40, 1));
-            for (int b=0;b<40;b++) {
-                pannelloAllenatori.add(new JCheckBox("awrggfv"));
-            }
+            
+            
+            ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
+            Connection conn= prov.getMySQLConnection();
+                try {
+                    Statement s = conn.createStatement();
+                    ResultSet rs = s.executeQuery("Select * from allenatore");
+                while(rs.next()){
+                    LinkedList<JCheckBox> allenatoriList= new LinkedList<JCheckBox>();
+                    allenatoriList.add(new JCheckBox(rs.getObject(1).toString()));
+                    for (JCheckBox jCheckBox : allenatoriList) {
+                        pannelloAllenatori.add(jCheckBox);
+                    }
+                 }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                
             JScrollPane scrollPaneAllenatori = new JScrollPane(pannelloAllenatori);
             pannelloDestra.add(scrollPaneAllenatori);
 
             JPanel pannelloGiocatori= new JPanel();
             pannelloGiocatori.setLayout(new GridLayout(40, 1));
-    
-            for (int a=0;a<40;a++) {
-                pannelloGiocatori.add(new JCheckBox("a.toString("));
+
+            try {
+                Statement s = conn.createStatement();
+                ResultSet rs = s.executeQuery("Select * from iscritto");
+            while(rs.next()){
+                LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
+                giocatoriList.add(new JCheckBox(rs.getObject(1).toString()));
+                for (JCheckBox jCheckBox : giocatoriList) {
+                    pannelloGiocatori.add(jCheckBox);
+                }
+             }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
             JScrollPane scrollPane1 = new JScrollPane(pannelloGiocatori);
             panel.add(pannelloSuperiore, BorderLayout.NORTH);
