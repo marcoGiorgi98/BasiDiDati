@@ -39,6 +39,7 @@ public class ViewDataPanel  extends JFrame {
        comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
        comboBox.addItem("Trasferta"); // aggiungi la seconda opzione alla JComboBox
        comboBox.addItem("Allenamento"); // aggiungi la seconda opzione alla JComboBox
+       comboBox.addItem("Fare"); // aggiungi la seconda opzione alla JComboBox
 
        // Creo il bottone per eseguire la query
        executeButton = new JButton("Execute");
@@ -46,7 +47,6 @@ public class ViewDataPanel  extends JFrame {
 
        // Creo la tabella per i risultati (inizialmente vuota)
        resultTable = new JTable();
-       //resultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
        // Creo lo scroll pane per la tabella
        scrollPane = new JScrollPane(resultTable);
