@@ -65,17 +65,26 @@ public class Training extends JPanel{
     }
     public void callQuery() {
         try {
+            Statement state= conn.createStatement();
             s = conn.createStatement();
-            s.executeUpdate(
+            String sSQL = "SELECT count(*) FROM allenamento WHERE CodAllenamento = '"+cod_training_Field.getText().toUpperCase()+"'";
+            ResultSet rs = state.executeQuery( sSQL);
+            rs.next();
+            String resultCount = rs.getObject(1).toString();
+            if(!resultCount.equals("0")){
+                
+            }else {
+                s.executeUpdate(
                 "INSERT INTO allenamento (CodAllenamento, Data)"+
                "VALUES ('"+cod_training_Field.getText().toUpperCase()+"', '"+dateField.getText()+"');");
-
-               playersList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
-                try {
+            }
+            
+            playersList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
+                try 
+                {
                     s.executeUpdate("INSERT INTO fare (CodAllenamento, CF_Iscritto)"+
                     "VALUES ('"+cod_training_Field.getText().toUpperCase()+"', '"+giocatore.getText()+"');");
-                  
-              } catch (SQLException e) {
+                } catch (SQLException e) {
                   e.printStackTrace();
               }
             });  
