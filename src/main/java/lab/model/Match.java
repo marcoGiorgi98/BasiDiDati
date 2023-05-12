@@ -1,27 +1,25 @@
 package lab.model;
 
 import javax.swing.*;
-
 import lab.db.ConnectionProvider;
-
 import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class Match extends JPanel{
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); 
 
-    private JTextField cod_match_Field = new JTextField(10); // crea una textbox di 10 caratteri per il nome
-    private JTextField teamCodField = new JTextField(10); // crea una textbox di 10 caratteri per il nome
-    private JTextField viaField = new JTextField(20); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField cityField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField numberField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField capField = new JTextField(5); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField resultField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField cf_PreparatoreField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField avversarioField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
+    private JTextField cod_match_Field = new JTextField(10); 
+    private JTextField teamCodField = new JTextField(10); 
+    private JTextField viaField = new JTextField(20); 
+    private JTextField cityField = new JTextField(10); 
+    private JTextField numberField = new JTextField(10);
+    private JTextField capField = new JTextField(5); 
+    private JTextField resultField = new JTextField(10);
+    private JTextField cf_PreparatoreField = new JTextField(10);
+    private JTextField avversarioField = new JTextField(10); 
 
-    private JFormattedTextField dateField; // crea una textbox formattata per la data di nascita
+    private JFormattedTextField dateField; 
     JTextField nomeSquadra = new JTextField();
     JTextField codSquadra = new JTextField();
     JPanel pannelloAllenatori = new JPanel(new GridLayout(40, 1));
@@ -37,45 +35,45 @@ public class Match extends JPanel{
     }
 
     private void mainInterface() {
-        //setSize(1000, 600);
-        this.setLayout(new GridLayout(14, 2)); // usa GridLayout con 7 righe e 2 colonne
-        JLabel cod_match_Label = new JLabel("Codice Partita:"); // crea una label per il nome
-        JLabel teamCodLabel = new JLabel("Codice Squadra:"); // crea una label per il nome
-        JLabel addressLabel1 = new JLabel("Via:"); // crea una label per l'indirizzo
-        JLabel addressLabel2 = new JLabel("Numero:"); // crea una label per l'indirizzo
-        JLabel addressLabel4 = new JLabel("Città:"); // crea una label per l'indirizzo
-        JLabel addressLabel3 = new JLabel("CAP:"); // crea una label per l'indirizzo
-        JLabel avversario = new JLabel("Avversario:"); // crea una label per l'indirizzo
-        JLabel result = new JLabel("Risultato:"); // crea una label per l'indirizzo
-        JLabel CF_preparatore = new JLabel("CF Preparatore:"); // crea una label per l'indirizzo
-        JLabel dateLabel = new JLabel("Data (2000/12/27):"); // crea una label per la data di nascita
+        this.setLayout(new GridLayout(14, 2)); 
+        JLabel cod_match_Label = new JLabel("Codice Partita:");
+        JLabel teamCodLabel = new JLabel("Codice Squadra:"); 
+        JLabel addressLabel1 = new JLabel("Via:"); 
+        JLabel addressLabel2 = new JLabel("Numero:"); 
+        JLabel addressLabel4 = new JLabel("Città:"); 
+        JLabel addressLabel3 = new JLabel("CAP:"); 
+        JLabel avversario = new JLabel("Avversario:"); 
+        JLabel result = new JLabel("Risultato:"); 
+        JLabel CF_preparatore = new JLabel("CF Preparatore:");
+        JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
         
         
-        dateFormat.setLenient(false); // rendi il formato non tollerante alle date non valide
-        dateField = new JFormattedTextField(dateFormat); // crea la textbox formattata con il formato di data
+        dateFormat.setLenient(false); 
+        dateField = new JFormattedTextField(dateFormat); 
 
         this.add( cod_match_Label);
         this.add(cod_match_Field);
-        this.add(teamCodLabel); // aggiungi la label del nome al panel nella prima cella
-        this.add(teamCodField); // aggiungi la textbox del nome al panel nella seconda cella
-        this.add(dateLabel); // aggiungi la label della data di nascita al panel nella nona cella
-        this.add(dateField); // aggiungi la textbox della data di nascita al panel nella decima cella
-        this.add(addressLabel4); // aggiungi la label dell'indirizzo al panel nella settima cella
-        this.add(cityField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        this.add(addressLabel1); // aggiungi la label dell'indirizzo al panel nella settima cella
-        this.add(viaField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        this.add(addressLabel3); // aggiungi la label dell'indirizzo al panel nella settima cella
-        this.add(capField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        this.add(addressLabel2); // aggiungi la label dell'indirizzo al panel nella settima cella
-        this.add(numberField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella  
-        this.add(avversario); // aggiungi la label dell'indirizzo al panel nella settima cella
-        this.add(avversarioField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        this.add(result); // aggiungi la label dell'indirizzo al panel nella settima cella
-        this.add(resultField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        this.add(CF_preparatore); // aggiungi la label dell'indirizzo al panel nella settima cella
-        this.add(cf_PreparatoreField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        setVisible(true); // mostra il frame
+        this.add(teamCodLabel); 
+        this.add(teamCodField); 
+        this.add(dateLabel); 
+        this.add(dateField); 
+        this.add(addressLabel4);
+        this.add(cityField); 
+        this.add(addressLabel1);
+        this.add(viaField); 
+        this.add(addressLabel3);
+        this.add(capField); 
+        this.add(addressLabel2);
+        this.add(numberField);  
+        this.add(avversario); 
+        this.add(avversarioField);
+        this.add(result); 
+        this.add(resultField);
+        this.add(CF_preparatore);
+        this.add(cf_PreparatoreField);
+        setVisible(true); 
     }
+
     public void callQuery() {
         try {
             s = conn.createStatement();

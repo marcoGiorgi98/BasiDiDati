@@ -53,10 +53,6 @@ public class Pay extends JPanel{
                "VALUES ('"+cod_paymentField.getText().toUpperCase()+"', '"+dateField.getText()
                +"', '"+priceField.getText()+"');");
 
-               System.out.println("INSERT INTO Riceve (CodStipendio,"+ comboBox.getSelectedItem().toString()+")"+
-               " VALUES ('"+cod_paymentField.getText().toUpperCase()+"', '"
-               +"', '"+cfField.getText().toUpperCase()
-               +"');");
             s.executeUpdate(
                 "INSERT INTO Riceve (CodStipendio,"+ comboBox.getSelectedItem().toString()+")"+
                " VALUES ('"+cod_paymentField.getText().toUpperCase()+"','"
