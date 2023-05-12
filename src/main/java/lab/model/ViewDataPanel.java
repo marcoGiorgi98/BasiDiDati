@@ -15,12 +15,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class ViewDataPanel  extends JFrame {
 
-    // Variabili per la connessione al database
     private static final String DB_URL = "polisportiva";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "Lakanoch98!";
 
-    // Variabili per l'interfaccia grafica
     private JButton executeButton; 
     private JTable resultTable; 
     private JScrollPane scrollPane; 
@@ -126,7 +124,8 @@ public class ViewDataPanel  extends JFrame {
         try {
             ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
-            String sSQL = "SELECT P.CodPartita,P.CodSquadra,P.Data,P.Città,P.Via,P.Cap,P.Numero,P.Avversario,P.CF_Preparatore,S.CF_Allenatore,P.Risultato"+
+            String sSQL = "SELECT P.CodPartita,P.CodSquadra,P.Data,P.Città,P.Via"
+            +",P.Cap,P.Numero,P.Avversario,P.CF_Preparatore,S.CF_Allenatore,P.Risultato"+
             " FROM partita P JOIN squadra S ON P.CodSquadra = S.CodSquadra WHERE S.Sport = ?";
             PreparedStatement pS = conn.prepareStatement(sSQL);
             pS.setString(1,comboBoxSports.getSelectedItem().toString().toLowerCase());
