@@ -45,6 +45,7 @@ public class InsertNewDataPanel extends JFrame {
     Match scontro;
     Transfert transfert;
     Training training;
+    Tesseramento tesserament;
     JPanel panel = new JPanel(); // crea un panel
     JPanel panelSuperiore= new JPanel();
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
@@ -96,6 +97,7 @@ public class InsertNewDataPanel extends JFrame {
         comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Trasferta"); // aggiungi la seconda opzione alla JComboBox
         comboBox.addItem("Allenamento"); // aggiungi la seconda opzione alla JComboBox
+         comboBox.addItem("Tesseramento"); // aggiungi la seconda opzione alla JComboBox
         comboBox.setEditable(false); // rendi la JComboBox non modificabile
         panelSuperiore.add(selectionLabel);
         panelSuperiore.add(comboBox); // aggiungi la JComboBox al panel nell'undicesima cella
@@ -154,6 +156,7 @@ public class InsertNewDataPanel extends JFrame {
             case "Partita": scontro.callQuery() ;break;
             case "Trasferta": transfert.callQuery() ;break;
             case "Allenamento": training.callQuery() ;break;
+            case "Tesseramento": tesserament.callQuery() ;break;
             default:  addPreparatoreAllenatore(selectedTable) ;
                 break;
         }
@@ -270,6 +273,13 @@ public class InsertNewDataPanel extends JFrame {
             this.remove(panel);
             training = new Training();
             add( training, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+            revalidate();
+            repaint();
+        }
+        if(comboBox.getSelectedItem()=="Tesseramento") {
+            this.remove(panel);
+            tesserament = new Tesseramento();
+            add( tesserament, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
         }

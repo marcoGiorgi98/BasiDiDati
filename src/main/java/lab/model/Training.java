@@ -12,12 +12,12 @@ import java.util.LinkedList;
 public class Training extends JPanel{
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
 
-    private JTextField cod_training_Field = new JTextField(10); // crea una textbox di 10 caratteri per il nome
-    private JFormattedTextField dateField; // crea una textbox formattata per la data di nascita
+    private JTextField cod_training_Field = new JTextField(10); 
+    private JFormattedTextField dateField; 
     
-    private JScrollPane scrollPane; // Lo scroll pane per la tabella
+    private JScrollPane scrollPane;
     JPanel pannelloPlayers = new JPanel(new GridLayout(1, 1));
-    private LinkedList<JCheckBox> playersList = new LinkedList<>()  ; // Lista dei giocatori selezionati
+    private LinkedList<JCheckBox> playersList = new LinkedList<>()  ; 
 
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
     Connection conn= prov.getMySQLConnection();
@@ -31,16 +31,16 @@ public class Training extends JPanel{
     }
 
     private void mainInterface() {
-        this.setLayout(new GridLayout(6, 2)); // usa GridLayout con 7 righe e 2 colonne
-        JLabel cod_trainign_Label = new JLabel("Codice Allenamento:"); // crea una label per il nome
-        JLabel trainDateLabel = new JLabel("Data Allenamento (2000/01/29):"); // crea una label per il nome
-        dateFormat.setLenient(false); // rendi il formato non tollerante alle date non valide
-        dateField = new JFormattedTextField(dateFormat); // crea la textbox formattata con il formato di data
+        this.setLayout(new GridLayout(6, 2)); 
+        JLabel cod_trainign_Label = new JLabel("Codice Allenamento:"); 
+        JLabel trainDateLabel = new JLabel("Data Allenamento (2000/01/29):"); 
+        dateFormat.setLenient(false); 
+        dateField = new JFormattedTextField(dateFormat); 
 
         this.add( cod_trainign_Label);
         this.add(cod_training_Field);
-        this.add(trainDateLabel); // aggiungi la label del nome al panel nella prima cella
-        this.add(dateField); // aggiungi la textbox del nome al panel nella seconda cella
+        this.add(trainDateLabel); 
+        this.add(dateField); 
 
 
         String sSQL = "SELECT * FROM Iscritto";
@@ -61,13 +61,14 @@ public class Training extends JPanel{
         }
         this.scrollPane = new JScrollPane(pannelloPlayers);
         add(scrollPane);
-        setVisible(true); // mostra il frame
+        setVisible(true); 
     }
     public void callQuery() {
         try {
             Statement state= conn.createStatement();
             s = conn.createStatement();
-            String sSQL = "SELECT count(*) FROM allenamento WHERE CodAllenamento = '"+cod_training_Field.getText().toUpperCase()+"'";
+            String sSQL = "SELECT count(*) FROM allenamento WHERE CodAllenamento = '"
+            +cod_training_Field.getText().toUpperCase()+"'";
             ResultSet rs = state.executeQuery( sSQL);
             rs.next();
             String resultCount = rs.getObject(1).toString();
@@ -76,14 +77,18 @@ public class Training extends JPanel{
             }else {
                 s.executeUpdate(
                 "INSERT INTO allenamento (CodAllenamento, Data)"+
-               "VALUES ('"+cod_training_Field.getText().toUpperCase()+"', '"+dateField.getText()+"');");
+               "VALUES ('"+cod_training_Field.getText().toUpperCase()+"', '"+
+               dateField.getText()+"');");
             }
-            
+            rs.close();
+            state.close();
             playersList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
                 try 
                 {
                     s.executeUpdate("INSERT INTO fare (CodAllenamento, CF_Iscritto)"+
-                    "VALUES ('"+cod_training_Field.getText().toUpperCase()+"', '"+giocatore.getText()+"');");
+                    "VALUES ('"+cod_training_Field.getText().toUpperCase()+"', '"
+                    +giocatore.getText()+"');");
+                    s.close();
                 } catch (SQLException e) {
                   e.printStackTrace();
               }
