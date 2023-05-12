@@ -1,6 +1,8 @@
 package lab.model;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,35 +21,38 @@ public class ViewDataPanel  extends JFrame {
     private static final String DB_PASSWORD = "Lakanoch98!";
 
     // Variabili per l'interfaccia grafica
-    private JButton executeButton; // Il bottone per eseguire la query
-    private JTable resultTable; // La tabella per mostrare i risultati
-    private JScrollPane scrollPane; // Lo scroll pane per la tabella
-    JPanel panel = new JPanel(); // crea un panel
+    private JButton executeButton; 
+    private JTable resultTable; 
+    private JScrollPane scrollPane; 
+    private JFormattedTextField dateField; 
+    JPanel panel = new JPanel(); 
 
-    private JComboBox<String> comboBox = new JComboBox<>(); // crea una JComboBox
-    private JComboBox<String> comboBoxSports = new JComboBox<>(); // crea una JComboBox
+    private JComboBox<String> comboBox = new JComboBox<>();
+    private JComboBox<String> comboBoxSports = new JComboBox<>(); 
 
     public ViewDataPanel() {
-       // Creo la finestra principal 
        setSize(1000, 600);
        setTitle("Visualizza Dati");
-       panel.setLayout(new GridLayout(2, 1)); // usa GridLayout con 7 righe e 2 colonne
+       panel.setLayout(new GridLayout(2, 3)); 
+       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM"); 
+       dateField = new JFormattedTextField(dateFormat); 
 
-       JLabel textLabel = new JLabel("Visualizza:"); // crea una label per il cognome
-       comboBox.addItem("Iscritto"); // aggiungi la prima opzione alla JComboBox
-       comboBox.addItem("Allenatore"); // aggiungi la seconda opzione alla JComboBox
-       comboBox.addItem("Autista"); // aggiungi la seconda opzione alla JComboBox
-       comboBox.addItem("Preparatore"); // aggiungi la seconda opzione alla JComboBox
-       comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
-       comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
-       comboBox.addItem("Trasferta"); // aggiungi la seconda opzione alla JComboBox
-       comboBox.addItem("Allenamento"); // aggiungi la seconda opzione alla JComboBox
-       comboBox.addItem("Fare"); // aggiungi la seconda opzione alla JComboBox
+       JLabel textLabel = new JLabel("Visualizza:"); 
+       comboBox.addItem("Iscritto"); 
+       comboBox.addItem("Allenatore");
+       comboBox.addItem("Autista"); 
+       comboBox.addItem("Preparatore");
+       comboBox.addItem("Squadra"); 
+       comboBox.addItem("Partita"); 
+       comboBox.addItem("Trasferta"); 
+       comboBox.addItem("Allenamento");
+       comboBox.addItem("Fare"); 
+       comboBox.addItem("Pagamenti"); 
 
-        comboBoxSports.addItem("Calcio"); // aggiungi la prima opzione alla JComboBox
-        comboBoxSports.addItem("Pallavolo"); // aggiungi la seconda opzione alla JComboBox
-        comboBoxSports.addItem("Basket"); // aggiungi la seconda opzione alla JComboBox
-        comboBoxSports.addItem("Baseball"); // aggiungi la seconda opzione alla JComboBox
+        comboBoxSports.addItem("Calcio"); 
+        comboBoxSports.addItem("Pallavolo"); 
+        comboBoxSports.addItem("Basket");
+        comboBoxSports.addItem("Baseball"); 
 
         comboBox.addActionListener(new ActionListener() {
             @Override
@@ -56,33 +61,30 @@ public class ViewDataPanel  extends JFrame {
             }
             
         });
-       // Creo il bottone per eseguire la query
        executeButton = new JButton("Execute");
        executeButton.addActionListener(e ->{
-        if(comboBox.getSelectedItem().toString().toLowerCase().equals("partita")){
-           executeQueryMatch();
+        switch (comboBox.getSelectedItem().toString().toLowerCase()) {
+            case "partita":executeQueryMatch();break;
+            case "pagamenti":executeQueryPay();break;
+                
+        
+            default: executeQuery();break;
         }
-        else{
-            executeQuery();
-        }
-       } ); // Aggiungo un listener che chiama il metodo executeQuery quando il bottone viene premuto
-
-       // Creo la tabella per i risultati (inizialmente vuota)
+       
+       } ); 
        resultTable = new JTable();
-
-       // Creo lo scroll pane per la tabella
        scrollPane = new JScrollPane(resultTable);
 
-       // Aggiungo i componenti alla finestra
+       panel.add(new JLabel(""));
        panel.add(textLabel);
        panel.add(comboBox);
        panel.add(comboBoxSports);
+       panel.add(new JLabel("Data :"));
+       panel.add(dateField);
        comboBoxSports.setVisible(false);
-
-       // Imposto la dimensione e la visibilità della finestra
-       add(panel, BorderLayout.NORTH); // aggiungi il panel al frame al centro
-       add(scrollPane, BorderLayout.CENTER); // aggiungi il panel al frame al centro
-       add( executeButton, BorderLayout.SOUTH); // aggiungi il bottone al frame a sud
+       add(panel, BorderLayout.NORTH); 
+       add(scrollPane, BorderLayout.CENTER); 
+       add( executeButton, BorderLayout.SOUTH); 
        setVisible(true);
     }
 
@@ -113,79 +115,72 @@ public class ViewDataPanel  extends JFrame {
                 rs = pS.executeQuery(sSQL.replace("?",comboBox.getSelectedItem().toString().toLowerCase()));
             }
             
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            DefaultTableModel tableModel = new DefaultTableModel();
-            for (int i = 1; i <= columnCount; i++) {
-                tableModel.addColumn(metaData.getColumnName(i));
-            }
-
-            while (rs.next()) {
-                Object[] rowData = new Object[columnCount];
-                for (int i = 1; i <= columnCount; i++) {
-                    rowData[i - 1] = rs.getObject(i);
-                }
-                tableModel.addRow(rowData);
-            }
-            
-            panel.revalidate();
-            this.resultTable = new JTable(tableModel);
-            scrollPane = new JScrollPane(resultTable);
-            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
-            add(scrollPane, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+            this.showResult(rs);
                
         } catch (SQLException ex) {
-            // In caso di eccezione, mostro un messaggio di errore
             JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void executeQueryMatch() {
-        
         try {
             ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
-            
             String sSQL = "SELECT P.CodPartita,P.CodSquadra,P.Data,P.Città,P.Via,P.Cap,P.Numero,P.Avversario,P.CF_Preparatore,S.CF_Allenatore,P.Risultato"+
             " FROM partita P JOIN squadra S ON P.CodSquadra = S.CodSquadra WHERE S.Sport = ?";
             PreparedStatement pS = conn.prepareStatement(sSQL);
             pS.setString(1,comboBoxSports.getSelectedItem().toString().toLowerCase());
-            System.out.println(pS);
-         
             ResultSet rs = pS.executeQuery();
-            System.out.println(pS);
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            DefaultTableModel tableModel = new DefaultTableModel();
-            for (int i = 1; i <= columnCount; i++) {
-                tableModel.addColumn(metaData.getColumnName(i));
-            }
-
-            while (rs.next()) {
-                Object[] rowData = new Object[columnCount];
-                for (int i = 1; i <= columnCount; i++) {
-                    rowData[i - 1] = rs.getObject(i);
-                }
-                tableModel.addRow(rowData);
-            }
-            
-            panel.revalidate();
-            this.resultTable = new JTable(tableModel);
-            scrollPane = new JScrollPane(resultTable);
-            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
-            add(scrollPane, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+           this.showResult(rs);
                
         } catch (SQLException ex) {
-            // In caso di eccezione, mostro un messaggio di errore
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    private void showResult( ResultSet rs) throws SQLException {
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        DefaultTableModel tableModel = new DefaultTableModel();
+        for (int i = 1; i <= columnCount; i++) {
+            tableModel.addColumn(metaData.getColumnName(i));
+        }
+        while (rs.next()) {
+            Object[] rowData = new Object[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                rowData[i - 1] = rs.getObject(i);
+            }
+            tableModel.addRow(rowData);
+        }
+        panel.revalidate();
+        this.resultTable = new JTable(tableModel);
+        scrollPane = new JScrollPane(resultTable);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED );
+        add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void executeQueryPay() {
+        try {
+            ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
+            Connection conn= prov.getMySQLConnection();
+            String sSQL = "SELECT * FROM Stipendio"+
+            " WHERE MONTH(DataErogazione) = "+dateField.getText().split("/")[1]
+            +" AND YEAR(DataErogazione) = "+dateField.getText().split("/")[0];
+            PreparedStatement pS = conn.prepareStatement(sSQL);
+            ResultSet rs = pS.executeQuery();
+           this.showResult(rs);
+               
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void checkComboBoxInput() {
-        if(comboBox.getSelectedItem().toString().toLowerCase().equals("partita")) {
+        if (comboBox.getSelectedItem().toString().toLowerCase().equals("partita")) {
             comboBoxSports.setVisible(true);
         }
-        else  comboBoxSports.setVisible(false);
+        else {
+            comboBoxSports.setVisible(false);
+        } 
     }
 }
 
