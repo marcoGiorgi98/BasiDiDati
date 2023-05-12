@@ -8,13 +8,11 @@ import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-public class Tesseramento extends JPanel{
+public class Pay extends JPanel{
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); 
 
-    private JTextField cod_tessermentoField = new JTextField(10); 
-    private JTextField categoryField = new JTextField(10); 
+    private JTextField cod_paymentField = new JTextField(10); 
     private JTextField priceField = new JTextField(5); 
-    private JTextField cField= new JTextField(16); 
     private JFormattedTextField dateField; 
 
     ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
@@ -23,41 +21,33 @@ public class Tesseramento extends JPanel{
     ResultSet r;
        
 
-    public Tesseramento() {
+    public Pay() {
         mainInterface();
     }
 
     private void mainInterface() {
         this.setLayout(new GridLayout(14, 2)); 
-        JLabel codTesseramentoLabel = new JLabel("Codice Tessera:"); 
-        JLabel categoryLabel = new JLabel("Categoria:"); 
-        JLabel priceLabel = new JLabel("Costo €:"); 
-        JLabel CFLabel = new JLabel("CF Iscritto:"); 
-        JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
+        JLabel codpaymentLabel = new JLabel("Codice Pagamento:"); 
+        JLabel priceLabel = new JLabel("Cifra €:"); 
+        JLabel dateLabel = new JLabel("Data Erogazione (2000/12/27):"); 
         
         dateFormat.setLenient(false); 
         dateField = new JFormattedTextField(dateFormat); 
-        this.add(codTesseramentoLabel);
-        this.add(cod_tessermentoField);
-        this.add(categoryLabel); 
-        this.add(categoryField); 
+        this.add(codpaymentLabel);
+        this.add(cod_paymentField);
         this.add(dateLabel);
         this.add(dateField); 
         this.add(priceLabel); 
         this.add(priceField); 
-        this.add(CFLabel); 
-        this.add(cField); 
         setVisible(true); 
     }
     public void callQuery() {
         try {
             s = conn.createStatement();
             s.executeUpdate(
-                "INSERT INTO Tesseramento (CodTesseramento, Data, Categoria,Prezzo,CF)"+
-               "VALUES ('"+cod_tessermentoField.getText().toUpperCase()+"', '"+dateField.getText()
-               +"', '"+categoryField.getText().toUpperCase()
-               +"', '"+priceField.getText()
-               +"', '"+cField.getText()+"');");
+                "INSERT INTO Stipendio (CodStipendio, DataErogazione,Cifra)"+
+               "VALUES ('"+cod_paymentField.getText().toUpperCase()+"', '"+dateField.getText()
+               +"', '"+priceField.getText()+"');");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
