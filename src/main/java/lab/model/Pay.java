@@ -15,7 +15,7 @@ public class Pay extends JPanel{
     private JTextField cfField = new JTextField(16); 
     private JComboBox<String> comboBox = new JComboBox<>(); 
     private Connection connection;
-    Statement s;
+    Statement statement;
     ResultSet r;
     public Pay(ConnectionProvider provider) {
         this.connection = provider.getMySQLConnection();
@@ -46,19 +46,22 @@ public class Pay extends JPanel{
     }
     public void callQuery() {
         try {
-            s = connection.createStatement();
-            s.executeUpdate(
+            statement = connection.createStatement();
+            statement.executeUpdate(
                 "INSERT INTO Stipendio (CodStipendio, DataErogazione,Cifra)"+
                "VALUES ('"+cod_paymentField.getText().toUpperCase()+"', '"+dateField.getText()
                +"', '"+priceField.getText()+"');");
 
-            s.executeUpdate(
+            statement.executeUpdate(
                 "INSERT INTO Riceve (CodStipendio,"+ comboBox.getSelectedItem().toString()+")"+
                " VALUES ('"+cod_paymentField.getText().toUpperCase()+"','"
                +cfField.getText().toUpperCase()
                +"');");   
+            statement.close();
+            connection.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 }

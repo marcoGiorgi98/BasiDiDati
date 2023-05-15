@@ -132,7 +132,7 @@ public class InsertNewDataPanel extends JFrame {
         switch (selectedTable) {
             case "Autista": addAutista() ;break;
             case "Iscritto": addIscritto(); ;break;
-            case "Squadra": addSquadra() ;break;
+            case "Squadra": team.callQuery() ;break;
             case "Partita": match.callQuery() ;break;
             case "Trasferta": transfert.callQuery() ;break;
             case "Allenamento": training.callQuery() ;break;
@@ -181,10 +181,6 @@ public class InsertNewDataPanel extends JFrame {
        } catch (SQLException e) {
            e.printStackTrace();
        }
-       
-    }
-
-    private void addSquadra() {
        
     }
 

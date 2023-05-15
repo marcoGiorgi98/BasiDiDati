@@ -27,11 +27,10 @@ public class Training extends JPanel{
 
     private void mainInterface() {
         this.setLayout(new GridLayout(6, 2)); 
-        final JLabel cod_trainign_Label = new JLabel("Codice Allenamento:"); 
         final JLabel trainDateLabel = new JLabel("Data Allenamento (2000/01/29):"); 
         dateFormat.setLenient(false); 
         dateField = new JFormattedTextField(dateFormat); 
-        this.add( cod_trainign_Label);
+        this.add( new JLabel("Codice Allenamento:"));
         this.add(cod_training_Field);
         this.add(trainDateLabel); 
         this.add(dateField); 
@@ -58,11 +57,10 @@ public class Training extends JPanel{
     }
     public void callQuery() {
         try {
-            Statement state= connection.createStatement();
             statement = connection.createStatement();
             String sSQL = "SELECT count(*) FROM allenamento WHERE CodAllenamento = '"
             +cod_training_Field.getText().toUpperCase()+"'";
-            ResultSet rs = state.executeQuery( sSQL);
+            ResultSet rs = statement.executeQuery( sSQL);
             rs.next();
             String resultCount = rs.getObject(1).toString();
             if(!resultCount.equals("0")){
@@ -74,7 +72,6 @@ public class Training extends JPanel{
                dateField.getText()+"');");
             }
             rs.close();
-            state.close();
             playersList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
                 try 
                 {
@@ -86,8 +83,11 @@ public class Training extends JPanel{
                   e.printStackTrace();
               }
             });  
+            statement.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+       
     }
 }

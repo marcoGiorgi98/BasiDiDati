@@ -28,38 +28,29 @@ public class Match extends JPanel{
 
     private void mainInterface() {
         this.setLayout(new GridLayout(14, 2)); 
-        final JLabel cod_match_Label = new JLabel("Codice Partita:");
-        final JLabel teamCodLabel = new JLabel("Codice Squadra:"); 
-        final JLabel addressLabel1 = new JLabel("Via:"); 
-        final JLabel addressLabel2 = new JLabel("Numero:"); 
-        final JLabel addressLabel4 = new JLabel("Città:"); 
-        final JLabel addressLabel3 = new JLabel("CAP:"); 
-        final JLabel avversario = new JLabel("Avversario:"); 
-        final JLabel result = new JLabel("Risultato:"); 
-        final JLabel CF_preparatore = new JLabel("CF Preparatore:");
         final JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
         this.dateFormat.setLenient(false); 
         this.dateField = new JFormattedTextField(dateFormat); 
 
-        this.add( cod_match_Label);
+        this.add( new JLabel("Codice Partita:"));
         this.add(cod_match_Field);
-        this.add(teamCodLabel); 
+        this.add(new JLabel("Codice Squadra:")); 
         this.add(teamCodField); 
         this.add(dateLabel); 
         this.add(dateField); 
-        this.add(addressLabel4);
+        this.add(new JLabel("Città:"));
         this.add(cityField); 
-        this.add(addressLabel1);
+        this.add(new JLabel("Via:"));
         this.add(viaField); 
-        this.add(addressLabel3);
+        this.add(new JLabel("CAP:"));
         this.add(capField); 
-        this.add(addressLabel2);
+        this.add( new JLabel("Numero:"));
         this.add(numberField);  
-        this.add(avversario); 
+        this.add(new JLabel("Avversario:")); 
         this.add(avversarioField);
-        this.add(result); 
+        this.add(new JLabel("Risultato:")); 
         this.add(resultField);
-        this.add(CF_preparatore);
+        this.add(new JLabel("CF Preparatore:"));
         this.add(cf_PreparatoreField);
         setVisible(true); 
     }
@@ -75,6 +66,8 @@ public class Match extends JPanel{
                +"', '"+viaField.getText()+"', '"+capField.getText()
                +"', '"+numberField.getText()+"', '"+avversarioField.getText()
                +"', '"+resultField.getText()+"', '"+cf_PreparatoreField.getText().toUpperCase()+"');");
+            statement.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

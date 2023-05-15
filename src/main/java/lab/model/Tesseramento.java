@@ -14,7 +14,7 @@ public class Tesseramento extends JPanel{
     private JTextField cField= new JTextField(16); 
     private JFormattedTextField dateField; 
     private  Connection connection;
-    Statement s;
+    Statement statement;
     ResultSet r;
        
     public Tesseramento(ConnectionProvider provider) {
@@ -23,31 +23,26 @@ public class Tesseramento extends JPanel{
     }
 
     private void mainInterface() {
-        this.setLayout(new GridLayout(14, 2)); 
-        JLabel codTesseramentoLabel = new JLabel("Codice Tessera:"); 
-        JLabel categoryLabel = new JLabel("Categoria:"); 
-        JLabel priceLabel = new JLabel("Costo €:"); 
-        JLabel CFLabel = new JLabel("CF Iscritto:"); 
+        this.setLayout(new GridLayout(14, 2));  
         JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
-        
         dateFormat.setLenient(false); 
         dateField = new JFormattedTextField(dateFormat); 
-        this.add(codTesseramentoLabel);
+        this.add(new JLabel("Codice Tessera:"));
         this.add(cod_tessermentoField);
-        this.add(categoryLabel); 
+        this.add(new JLabel("Categoria:")); 
         this.add(categoryField); 
         this.add(dateLabel);
         this.add(dateField); 
-        this.add(priceLabel); 
+        this.add(new JLabel("Costo €:")); 
         this.add(priceField); 
-        this.add(CFLabel); 
+        this.add(new JLabel("CF Iscritto:")); 
         this.add(cField); 
         setVisible(true); 
     }
     public void callQuery() {
         try {
-            s = connection.createStatement();
-            s.executeUpdate(
+            statement = connection.createStatement();
+            statement.executeUpdate(
                 "INSERT INTO Tesseramento (CodTesseramento, Data, Categoria,Prezzo,CF)"+
                "VALUES ('"+cod_tessermentoField.getText().toUpperCase()+"', '"+dateField.getText()
                +"', '"+categoryField.getText().toUpperCase()
