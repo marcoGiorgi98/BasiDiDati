@@ -15,11 +15,13 @@ public class Pay extends JPanel{
     private JTextField cfField = new JTextField(16); 
     private JComboBox<String> comboBox = new JComboBox<>(); 
 
-    ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
-    Connection conn= prov.getMySQLConnection();
+   // private ConnectionProvider provider;
+    private Connection connection;
     Statement s;
     ResultSet r;
-    public Pay() {
+    public Pay(ConnectionProvider provider) {
+       // this.provider = provider;
+        this.connection = provider.getMySQLConnection();
         comboBox.addItem("CF_Allenatore");
         comboBox.addItem("CF_Autista");
         comboBox.addItem("CF_Preparatore");
@@ -47,7 +49,7 @@ public class Pay extends JPanel{
     }
     public void callQuery() {
         try {
-            s = conn.createStatement();
+            s = connection.createStatement();
             s.executeUpdate(
                 "INSERT INTO Stipendio (CodStipendio, DataErogazione,Cifra)"+
                "VALUES ('"+cod_paymentField.getText().toUpperCase()+"', '"+dateField.getText()

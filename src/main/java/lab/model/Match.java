@@ -18,35 +18,27 @@ public class Match extends JPanel{
     private JTextField resultField = new JTextField(10);
     private JTextField cf_PreparatoreField = new JTextField(10);
     private JTextField avversarioField = new JTextField(10); 
-
     private JFormattedTextField dateField; 
-    JTextField nomeSquadra = new JTextField();
-    JTextField codSquadra = new JTextField();
-    JPanel pannelloAllenatori = new JPanel(new GridLayout(40, 1));
-
-    ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
-    Connection conn= prov.getMySQLConnection();
-    Statement s;
-    ResultSet r;
+    private Connection connection;
+    private Statement statement;
        
-
-    public Match() {
+    public Match(ConnectionProvider provider) {
+        this.connection = provider.getMySQLConnection();
         mainInterface();
     }
 
     private void mainInterface() {
         this.setLayout(new GridLayout(14, 2)); 
-        JLabel cod_match_Label = new JLabel("Codice Partita:");
-        JLabel teamCodLabel = new JLabel("Codice Squadra:"); 
-        JLabel addressLabel1 = new JLabel("Via:"); 
-        JLabel addressLabel2 = new JLabel("Numero:"); 
-        JLabel addressLabel4 = new JLabel("Città:"); 
-        JLabel addressLabel3 = new JLabel("CAP:"); 
-        JLabel avversario = new JLabel("Avversario:"); 
-        JLabel result = new JLabel("Risultato:"); 
-        JLabel CF_preparatore = new JLabel("CF Preparatore:");
-        JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
-        
+        final JLabel cod_match_Label = new JLabel("Codice Partita:");
+        final JLabel teamCodLabel = new JLabel("Codice Squadra:"); 
+        final JLabel addressLabel1 = new JLabel("Via:"); 
+        final JLabel addressLabel2 = new JLabel("Numero:"); 
+        final JLabel addressLabel4 = new JLabel("Città:"); 
+        final JLabel addressLabel3 = new JLabel("CAP:"); 
+        final JLabel avversario = new JLabel("Avversario:"); 
+        final JLabel result = new JLabel("Risultato:"); 
+        final JLabel CF_preparatore = new JLabel("CF Preparatore:");
+        final JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
         
         dateFormat.setLenient(false); 
         dateField = new JFormattedTextField(dateFormat); 
@@ -76,8 +68,8 @@ public class Match extends JPanel{
 
     public void callQuery() {
         try {
-            s = conn.createStatement();
-            s.executeUpdate(
+            statement = connection.createStatement();
+            statement.executeUpdate(
                 "INSERT INTO Partita (CodPartita, CodSquadra, Data,  Città, Via,Cap, Numero,Avversario,Risultato,CF_Preparatore)"+
                "VALUES ('"+cod_match_Field.getText().toUpperCase()+"', '"+teamCodField.getText().toUpperCase()
                +"', '"+dateField.getText()

@@ -16,24 +16,24 @@ public class UserInterface extends JFrame{
     private void mainInterface() {
         setTitle("Polisportiva Bianchi&Rossi");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JPanel centerPanel = new JPanel(new FlowLayout()); // usa FlowLayout invece di GridLayout
+        JPanel centerPanel = new JPanel(new FlowLayout()); 
 
         centerPanel.add(insertDataBtn);
         centerPanel.add(viewDataBtn);
         centerPanel.add(closeButton);
-        closeButton.addActionListener(new ActionListener() { // usa una classe anonima invece di una classe separata
+        closeButton.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 System.exit(0);
             }
         });
-        insertDataBtn.addActionListener(new ActionListener() { // aggiungi un ActionListener al bottone per aprire il nuovo panel
+        insertDataBtn.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
                 InsertNewDataPanel dataPanel = new InsertNewDataPanel(getWidth(),getHeight());
             }
         });
 
-        viewDataBtn.addActionListener(new ActionListener() { // aggiungi un ActionListener al bottone per aprire il nuovo panel
+        viewDataBtn.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
                ViewDataPanel ViewdataPanel = new ViewDataPanel();
             }

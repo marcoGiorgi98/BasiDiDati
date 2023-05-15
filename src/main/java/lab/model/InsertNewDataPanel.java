@@ -12,47 +12,46 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
 public class InsertNewDataPanel extends JFrame {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); // crea un formato di data
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); 
 
-    private JComboBox<String> comboBox = new JComboBox<>(); // crea una JComboBox
-    private JTextField cFField = new JTextField(10); // crea una textbox di 10 caratteri per il nome
-    private JTextField nameField = new JTextField(10); // crea una textbox di 10 caratteri per il nome
-    private JTextField surnameField = new JTextField(10); // crea una textbox di 10 caratteri per il cognome
-    private JTextField phoneField = new JTextField(10); // crea una textbox di 10 caratteri per il telefono
-    private JTextField viaField = new JTextField(20); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField cityField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField numberField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField capField = new JTextField(5); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField driverField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField codTesseraField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
-    private JTextField categoryField = new JTextField(10); // crea una textbox di 10 caratteri per l'indirizzo
+    private JComboBox<String> comboBox = new JComboBox<>();
+    private JTextField cFField = new JTextField(10); 
+    private JTextField nameField = new JTextField(10); 
+    private JTextField surnameField = new JTextField(10); 
+    private JTextField phoneField = new JTextField(10); 
+    private JTextField viaField = new JTextField(20);
+    private JTextField cityField = new JTextField(10);
+    private JTextField numberField = new JTextField(10); 
+    private JTextField capField = new JTextField(5); 
+    private JTextField driverField = new JTextField(10); 
+    private JTextField codTesseraField = new JTextField(10); 
+    private JTextField categoryField = new JTextField(10); 
 
-    JLabel tesseraLabel = new JLabel("Codice Tessera"); // 
-    JLabel categoriaLabel = new JLabel("Categoria"); // 
+    private final JLabel tesseraLabel = new JLabel("Codice Tessera"); // 
+    private final JLabel categoriaLabel = new JLabel("Categoria"); // 
     private JFormattedTextField subscrictionField = new JFormattedTextField(dateFormat); 
-    private JFormattedTextField birthField; // crea una textbox formattata per la data di nascita
-    private JButton button = new JButton("Invia"); // crea un bottone con il testo "Invia"
-    JLabel DriverLabel = new JLabel("Numero Patente"); // 
-    JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); // 
+    private JFormattedTextField birthField; 
+    private JButton button = new JButton("Invia"); 
+    private final JLabel DriverLabel = new JLabel("Numero Patente"); // 
+    private final JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); 
+    private JComboBox<String> sportSelectionBox = new JComboBox<>();  
+    private JTextField nomeSquadra = new JTextField();
+    private JTextField codSquadra = new JTextField();
+    private JPanel pannelloAllenatori = new JPanel(new GridLayout(40, 1));
+    private LinkedList<JCheckBox> allenatoriList= new LinkedList<JCheckBox>();
+    private LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
 
-    JComboBox<String> sportSelectionBox = new JComboBox<>();   //sport da scegliere per una squadra
-    JTextField nomeSquadra = new JTextField();
-    JTextField codSquadra = new JTextField();
-    JPanel pannelloAllenatori = new JPanel(new GridLayout(40, 1));
-    LinkedList<JCheckBox> allenatoriList= new LinkedList<JCheckBox>();
-    LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
-
-    Match scontro;
-    Transfert transfert;
-    Training training;
-    Tesseramento tesserament;
-    Pay payment;
-    JPanel panel = new JPanel(); // crea un panel
-    JPanel panelSuperiore= new JPanel();
-    ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
-    Connection conn= prov.getMySQLConnection();
-    Statement s;
-    ResultSet r;
+    private Match scontro;
+    private Transfert transfert;
+    private Training training;
+    private Tesseramento tesserament;
+    private Pay payment;
+    private JPanel panel = new JPanel(); 
+    private JPanel upperPanel= new JPanel();
+    private ConnectionProvider provider = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
+    private  Connection conn= provider.getMySQLConnection();
+    private Statement statement;
+    private ResultSet r;
        
 
     public InsertNewDataPanel(int width, int height) {
@@ -75,55 +74,54 @@ public class InsertNewDataPanel extends JFrame {
     private void mainInterface(int width, int height) {
         setTitle("Inserisci nuovi Dati");
     
-        panel.setLayout(new GridLayout(14, 2)); // usa GridLayout con 7 righe e 2 colonne
-        panelSuperiore.setLayout(new GridLayout(1, 2));
-        JLabel cFLabel = new JLabel("Codice Fiscale:"); // crea una label per il nome
-        JLabel nameLabel = new JLabel("Nome:"); // crea una label per il nome
-        JLabel surnameLabel = new JLabel("Cognome:"); // crea una label per il cognome
-        JLabel phoneLabel = new JLabel("Telefono:"); // crea una label per il telefono
-        JLabel addressLabel1 = new JLabel("Via:"); // crea una label per l'indirizzo
-        JLabel addressLabel2 = new JLabel("Numero:"); // crea una label per l'indirizzo
-        JLabel addressLabel4 = new JLabel("Città:"); // crea una label per l'indirizzo
-        JLabel addressLabel3 = new JLabel("CAP:"); // crea una label per l'indirizzo
-        JLabel birthLabel = new JLabel("Data di nascita (2000/12/27):"); // crea una label per la data di nascita
-        JLabel selectionLabel = new JLabel("Figura da inserire"); // 
+        this.panel.setLayout(new GridLayout(14, 2)); 
+        this.upperPanel.setLayout(new GridLayout(1, 2));
+        final JLabel cFLabel = new JLabel("Codice Fiscale:"); 
+        final JLabel nameLabel = new JLabel("Nome:"); 
+        final JLabel surnameLabel = new JLabel("Cognome:"); 
+        final JLabel phoneLabel = new JLabel("Telefono:"); 
+        final JLabel addressLabel1 = new JLabel("Via:"); 
+        final JLabel addressLabel2 = new JLabel("Numero:"); 
+        final JLabel addressLabel4 = new JLabel("Città:"); 
+        final JLabel addressLabel3 = new JLabel("CAP:"); 
+        final JLabel birthLabel = new JLabel("Data di nascita (2000/12/27):"); 
+        final JLabel selectionLabel = new JLabel("Figura da inserire"); 
         
-        dateFormat.setLenient(false); // rendi il formato non tollerante alle date non valide
-        birthField = new JFormattedTextField(dateFormat); // crea la textbox formattata con il formato di data
-        comboBox.addItem("Allenatore"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Iscritto"); // aggiungi la prima opzione alla JComboBox
-        comboBox.addItem("Autista"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Preparatore"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Squadra"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Partita"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Trasferta"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Allenamento"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Tesseramento"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.addItem("Pagamento"); // aggiungi la seconda opzione alla JComboBox
-        comboBox.setEditable(false); // rendi la JComboBox non modificabile
-        panelSuperiore.add(selectionLabel);
-        panelSuperiore.add(comboBox); // aggiungi la JComboBox al panel nell'undicesima cella
-        panel.add( cFLabel);
+        dateFormat.setLenient(false); 
+        birthField = new JFormattedTextField(dateFormat); 
+        comboBox.addItem("Allenatore");
+        comboBox.addItem("Iscritto"); 
+        comboBox.addItem("Autista"); 
+        comboBox.addItem("Preparatore"); 
+        comboBox.addItem("Squadra"); 
+        comboBox.addItem("Partita"); 
+        comboBox.addItem("Trasferta");
+        comboBox.addItem("Allenamento"); 
+        comboBox.addItem("Tesseramento"); 
+        comboBox.addItem("Pagamento");
+        comboBox.setEditable(false); 
+        upperPanel.add(selectionLabel);
+        upperPanel.add(comboBox); 
+        panel.add(cFLabel);
         panel.add(cFField);
-        panel.add(nameLabel); // aggiungi la label del nome al panel nella prima cella
-        panel.add(nameField); // aggiungi la textbox del nome al panel nella seconda cella
-        panel.add(surnameLabel); // aggiungi la label del cognome al panel nella terza cella
-        panel.add(surnameField); // aggiungi la textbox del cognome al panel nella quarta cella
-        panel.add(phoneLabel); // aggiungi la label del telefono al panel nella quinta cella
-        panel.add(phoneField); // aggiungi la textbox del telefono al panel nella sesta cella
-        panel.add(birthLabel); // aggiungi la label della data di nascita al panel nella nona cella
-        panel.add(birthField); // aggiungi la textbox della data di nascita al panel nella decima cella
-        panel.add(addressLabel1); // aggiungi la label dell'indirizzo al panel nella settima cella
-        panel.add(viaField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        panel.add(addressLabel2); // aggiungi la label dell'indirizzo al panel nella settima cella
-        panel.add(numberField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella  
-        panel.add(addressLabel3); // aggiungi la label dell'indirizzo al panel nella settima cella
-        panel.add(cityField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-        panel.add(addressLabel4); // aggiungi la label dell'indirizzo al panel nella settima cella
-        panel.add(capField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
-
-        panel.add(DriverLabel); // aggiungi la label dell'indirizzo al panel nella settima cella
-        panel.add(driverField); // aggiungi la textbox dell'indirizzo al panel nell'ottava cella
+        panel.add(nameLabel); 
+        panel.add(nameField); 
+        panel.add(surnameLabel);
+        panel.add(surnameField);
+        panel.add(phoneLabel); 
+        panel.add(phoneField);
+        panel.add(birthLabel); 
+        panel.add(birthField); 
+        panel.add(addressLabel1);
+        panel.add(viaField); 
+        panel.add(addressLabel2);
+        panel.add(numberField);   
+        panel.add(addressLabel3);
+        panel.add(cityField); 
+        panel.add(addressLabel4);
+        panel.add(capField);
+        panel.add(DriverLabel); 
+        panel.add(driverField); 
 
        
         panel.add(tesseraLabel);
@@ -142,11 +140,11 @@ public class InsertNewDataPanel extends JFrame {
 
         driverField.setVisible(false);
         DriverLabel.setVisible(false);
-        add(panel, BorderLayout.CENTER); // aggiungi il panel al frame al centro
-        add(panelSuperiore, BorderLayout.NORTH); // aggiungi il panel al frame al centro
-        add(button, BorderLayout.SOUTH); // aggiungi il bottone al frame a sud
-        pack(); // imposta la dimensione del frame in base al suo contenuto
-        setVisible(true); // mostra il frame
+        add(panel, BorderLayout.CENTER); 
+        add(upperPanel, BorderLayout.NORTH); 
+        add(button, BorderLayout.SOUTH); 
+        pack(); 
+        setVisible(true); 
     }
 
     public void insertNewData() {
@@ -168,8 +166,8 @@ public class InsertNewDataPanel extends JFrame {
 
     private void addIscritto() {
         try {
-        s = conn.createStatement();
-        s.executeUpdate(
+        statement = conn.createStatement();
+        statement.executeUpdate(
          "INSERT INTO iscritto (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono,Categoria,DataIscrizione,CodTessera)"+
         "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+birthField.getText()
         +"', '"+viaField.getText()+"', '"+numberField.getText()
@@ -183,8 +181,8 @@ public class InsertNewDataPanel extends JFrame {
 
     private void addAutista() {
         try {
-            s = conn.createStatement();
-             s.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono, CodPatente)"+
+            statement = conn.createStatement();
+             statement.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono, CodPatente)"+
             "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
             birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
             +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+driverField.getText()+"');");
@@ -197,8 +195,8 @@ public class InsertNewDataPanel extends JFrame {
 
     private void addPreparatoreAllenatore(String person) {
         try {
-            s = conn.createStatement();
-             s.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
+            statement = conn.createStatement();
+             statement.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
             "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
             birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
             +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"');");
@@ -212,8 +210,8 @@ public class InsertNewDataPanel extends JFrame {
     private void addSquadra() {
         giocatoriList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
             try {
-                s = conn.createStatement();
-                s.executeUpdate("UPDATE iscritto SET CodSquadra = "+"'"
+                statement = conn.createStatement();
+                statement.executeUpdate("UPDATE iscritto SET CodSquadra = "+"'"
                 +codSquadra.getText()+"'"+"WHERE iscritto.CF = "
                 +"'"+giocatore.getText()+"'");
               
@@ -222,8 +220,8 @@ public class InsertNewDataPanel extends JFrame {
           }
         });
         try {
-            s = conn.createStatement();
-             s.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
+            statement = conn.createStatement();
+             statement.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
             "VALUES ('"+codSquadra.getText()+"', '"+nomeSquadra.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString()
             +"', '"+allenatoriList.stream().filter(x -> x.isSelected()).findFirst().get().getText() +"');");
            
@@ -260,35 +258,35 @@ public class InsertNewDataPanel extends JFrame {
         }
         if(comboBox.getSelectedItem()=="Partita") {
             this.remove(panel);
-            scontro = new Match();
+            scontro = new Match(this.provider);
             add(scontro, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
         }
         if(comboBox.getSelectedItem()=="Trasferta") {
             this.remove(panel);
-            transfert = new Transfert();
+            transfert = new Transfert(this.provider);
             add(transfert, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
         }
         if(comboBox.getSelectedItem()=="Allenamento") {
             this.remove(panel);
-            training = new Training();
+            training = new Training(this.provider);
             add( training, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
         }
         if(comboBox.getSelectedItem()=="Tesseramento") {
             this.remove(panel);
-            tesserament = new Tesseramento();
+            tesserament = new Tesseramento(this.provider);
             add( tesserament, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
         }
         if(comboBox.getSelectedItem()=="Pagamento") {
             this.remove(panel);
-            payment = new Pay();
+            payment = new Pay(this.provider);
             add( payment, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
@@ -312,9 +310,7 @@ public class InsertNewDataPanel extends JFrame {
             JPanel pannelloDestra = new JPanel(new GridLayout(2, 1));
             pannelloDestra.add(new JLabel("Seleziona nome dell'allenatore"));
             
-            
-            ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
-            Connection conn= prov.getMySQLConnection();
+            Connection conn= provider.getMySQLConnection();
                 try {
                     Statement s = conn.createStatement();
                     ResultSet rs = s.executeQuery("Select * from allenatore");

@@ -16,14 +16,13 @@ public class Tesseramento extends JPanel{
     private JTextField priceField = new JTextField(5); 
     private JTextField cField= new JTextField(16); 
     private JFormattedTextField dateField; 
-
-    ConnectionProvider prov = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
-    Connection conn= prov.getMySQLConnection();
+    private  Connection connection;
     Statement s;
     ResultSet r;
        
 
-    public Tesseramento() {
+    public Tesseramento(ConnectionProvider provider) {
+        this.connection = provider.getMySQLConnection();
         mainInterface();
     }
 
@@ -51,7 +50,7 @@ public class Tesseramento extends JPanel{
     }
     public void callQuery() {
         try {
-            s = conn.createStatement();
+            s = connection.createStatement();
             s.executeUpdate(
                 "INSERT INTO Tesseramento (CodTesseramento, Data, Categoria,Prezzo,CF)"+
                "VALUES ('"+cod_tessermentoField.getText().toUpperCase()+"', '"+dateField.getText()
