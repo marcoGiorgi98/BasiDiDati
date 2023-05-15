@@ -41,7 +41,7 @@ public class InsertNewDataPanel extends JFrame {
     private LinkedList<JCheckBox> allenatoriList= new LinkedList<JCheckBox>();
     private LinkedList<JCheckBox> giocatoriList= new LinkedList<JCheckBox>();
 
-    private Match scontro;
+    private Match match;
     private Transfert transfert;
     private Training training;
     private Tesseramento tesserament;
@@ -49,13 +49,13 @@ public class InsertNewDataPanel extends JFrame {
     private JPanel panel = new JPanel(); 
     private JPanel upperPanel= new JPanel();
     private ConnectionProvider provider = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
-    private  Connection conn= provider.getMySQLConnection();
+    private  Connection connection;
     private Statement statement;
     private ResultSet r;
        
 
     public InsertNewDataPanel(int width, int height) {
-        button.addActionListener(new ActionListener() { // aggiungi un ActionListener al bottone per aprire il nuovo panel
+        button.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
                 insertNewData();
             }
@@ -73,7 +73,12 @@ public class InsertNewDataPanel extends JFrame {
 
     private void mainInterface(int width, int height) {
         setTitle("Inserisci nuovi Dati");
-    
+        this.connection= provider.getMySQLConnection();
+        try {
+            this.statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         this.panel.setLayout(new GridLayout(14, 2)); 
         this.upperPanel.setLayout(new GridLayout(1, 2));
         final JLabel cFLabel = new JLabel("Codice Fiscale:"); 
@@ -86,60 +91,55 @@ public class InsertNewDataPanel extends JFrame {
         final JLabel addressLabel3 = new JLabel("CAP:"); 
         final JLabel birthLabel = new JLabel("Data di nascita (2000/12/27):"); 
         final JLabel selectionLabel = new JLabel("Figura da inserire"); 
-        
-        dateFormat.setLenient(false); 
-        birthField = new JFormattedTextField(dateFormat); 
-        comboBox.addItem("Allenatore");
-        comboBox.addItem("Iscritto"); 
-        comboBox.addItem("Autista"); 
-        comboBox.addItem("Preparatore"); 
-        comboBox.addItem("Squadra"); 
-        comboBox.addItem("Partita"); 
-        comboBox.addItem("Trasferta");
-        comboBox.addItem("Allenamento"); 
-        comboBox.addItem("Tesseramento"); 
-        comboBox.addItem("Pagamento");
-        comboBox.setEditable(false); 
-        upperPanel.add(selectionLabel);
-        upperPanel.add(comboBox); 
-        panel.add(cFLabel);
-        panel.add(cFField);
-        panel.add(nameLabel); 
-        panel.add(nameField); 
-        panel.add(surnameLabel);
-        panel.add(surnameField);
-        panel.add(phoneLabel); 
-        panel.add(phoneField);
-        panel.add(birthLabel); 
-        panel.add(birthField); 
-        panel.add(addressLabel1);
-        panel.add(viaField); 
-        panel.add(addressLabel2);
-        panel.add(numberField);   
-        panel.add(addressLabel3);
-        panel.add(cityField); 
-        panel.add(addressLabel4);
-        panel.add(capField);
-        panel.add(DriverLabel); 
-        panel.add(driverField); 
-
-       
-        panel.add(tesseraLabel);
-        panel.add(codTesseraField);
-        panel.add(categoriaLabel);
-        panel.add(categoryField);
-        panel.add(subscrictionLabel);
-        panel.add(subscrictionField);
-        subscrictionLabel.setVisible(false);
-        subscrictionField.setVisible(false);
-        categoryField.setVisible(false);
-        categoriaLabel.setVisible(false);
-        codTesseraField.setVisible(false);
-        tesseraLabel.setVisible(false);
-
-
-        driverField.setVisible(false);
-        DriverLabel.setVisible(false);
+        this.dateFormat.setLenient(false); 
+        this.birthField = new JFormattedTextField(dateFormat); 
+        this.comboBox.addItem("Allenatore");
+        this.comboBox.addItem("Iscritto"); 
+        this.comboBox.addItem("Autista"); 
+        this.comboBox.addItem("Preparatore"); 
+        this.comboBox.addItem("Squadra"); 
+        this.comboBox.addItem("Partita"); 
+        this.comboBox.addItem("Trasferta");
+        this.comboBox.addItem("Allenamento"); 
+        this.comboBox.addItem("Tesseramento"); 
+        this.comboBox.addItem("Pagamento");
+        this.comboBox.setEditable(false); 
+        this.upperPanel.add(selectionLabel);
+        this.upperPanel.add(comboBox); 
+        this.panel.add(cFLabel);
+        this.panel.add(cFField);
+        this.panel.add(nameLabel); 
+        this.panel.add(nameField); 
+        this.panel.add(surnameLabel);
+        this.panel.add(surnameField);
+        this.panel.add(phoneLabel); 
+        this.panel.add(phoneField);
+        this.panel.add(birthLabel); 
+        this.panel.add(birthField); 
+        this.panel.add(addressLabel1);
+        this.panel.add(viaField); 
+        this.panel.add(addressLabel2);
+        this.panel.add(numberField);   
+        this.panel.add(addressLabel3);
+        this.panel.add(cityField); 
+        this.panel.add(addressLabel4);
+        this.panel.add(capField);
+        this.panel.add(DriverLabel); 
+        this.panel.add(driverField); 
+        this.panel.add(tesseraLabel);
+        this.panel.add(codTesseraField);
+        this.panel.add(categoriaLabel);
+        this.panel.add(categoryField);
+        this.panel.add(subscrictionLabel);
+        this.panel.add(subscrictionField);
+        this.subscrictionLabel.setVisible(false);
+        this.subscrictionField.setVisible(false);
+        this.categoryField.setVisible(false);
+        this.categoriaLabel.setVisible(false);
+        this.codTesseraField.setVisible(false);
+        this.tesseraLabel.setVisible(false);
+        this.driverField.setVisible(false);
+        this.DriverLabel.setVisible(false);
         add(panel, BorderLayout.CENTER); 
         add(upperPanel, BorderLayout.NORTH); 
         add(button, BorderLayout.SOUTH); 
@@ -148,12 +148,12 @@ public class InsertNewDataPanel extends JFrame {
     }
 
     public void insertNewData() {
-        String selectedTable = comboBox.getSelectedItem().toString();
+        final  String selectedTable = comboBox.getSelectedItem().toString();
         switch (selectedTable) {
             case "Autista": addAutista() ;break;
             case "Iscritto": addIscritto(); ;break;
             case "Squadra": addSquadra() ;break;
-            case "Partita": scontro.callQuery() ;break;
+            case "Partita": match.callQuery() ;break;
             case "Trasferta": transfert.callQuery() ;break;
             case "Allenamento": training.callQuery() ;break;
             case "Tesseramento": tesserament.callQuery() ;break;
@@ -166,8 +166,7 @@ public class InsertNewDataPanel extends JFrame {
 
     private void addIscritto() {
         try {
-        statement = conn.createStatement();
-        statement.executeUpdate(
+            this.statement.executeUpdate(
          "INSERT INTO iscritto (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono,Categoria,DataIscrizione,CodTessera)"+
         "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+birthField.getText()
         +"', '"+viaField.getText()+"', '"+numberField.getText()
@@ -181,8 +180,7 @@ public class InsertNewDataPanel extends JFrame {
 
     private void addAutista() {
         try {
-            statement = conn.createStatement();
-             statement.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono, CodPatente)"+
+            this.statement.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono, CodPatente)"+
             "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
             birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
             +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+driverField.getText()+"');");
@@ -195,8 +193,7 @@ public class InsertNewDataPanel extends JFrame {
 
     private void addPreparatoreAllenatore(String person) {
         try {
-            statement = conn.createStatement();
-             statement.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
+             this.statement.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
             "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
             birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
             +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"');");
@@ -210,8 +207,7 @@ public class InsertNewDataPanel extends JFrame {
     private void addSquadra() {
         giocatoriList.stream().filter(x-> x.isSelected()).forEach(giocatore ->{
             try {
-                statement = conn.createStatement();
-                statement.executeUpdate("UPDATE iscritto SET CodSquadra = "+"'"
+                this.statement.executeUpdate("UPDATE iscritto SET CodSquadra = "+"'"
                 +codSquadra.getText()+"'"+"WHERE iscritto.CF = "
                 +"'"+giocatore.getText()+"'");
               
@@ -220,8 +216,7 @@ public class InsertNewDataPanel extends JFrame {
           }
         });
         try {
-            statement = conn.createStatement();
-             statement.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
+            this.statement.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
             "VALUES ('"+codSquadra.getText()+"', '"+nomeSquadra.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString()
             +"', '"+allenatoriList.stream().filter(x -> x.isSelected()).findFirst().get().getText() +"');");
            
@@ -258,8 +253,8 @@ public class InsertNewDataPanel extends JFrame {
         }
         if(comboBox.getSelectedItem()=="Partita") {
             this.remove(panel);
-            scontro = new Match(this.provider);
-            add(scontro, BorderLayout.CENTER); // aggiungi il panel al frame al centro
+            match = new Match(this.provider);
+            add(match, BorderLayout.CENTER); // aggiungi il panel al frame al centro
             revalidate();
             repaint();
         }
