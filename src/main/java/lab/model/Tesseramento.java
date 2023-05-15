@@ -1,9 +1,6 @@
 package lab.model;
-
 import javax.swing.*;
-
 import lab.db.ConnectionProvider;
-
 import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -20,7 +17,6 @@ public class Tesseramento extends JPanel{
     Statement s;
     ResultSet r;
        
-
     public Tesseramento(ConnectionProvider provider) {
         this.connection = provider.getMySQLConnection();
         mainInterface();

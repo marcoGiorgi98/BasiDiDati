@@ -14,13 +14,10 @@ public class Pay extends JPanel{
     private JFormattedTextField dateField; 
     private JTextField cfField = new JTextField(16); 
     private JComboBox<String> comboBox = new JComboBox<>(); 
-
-   // private ConnectionProvider provider;
     private Connection connection;
     Statement s;
     ResultSet r;
     public Pay(ConnectionProvider provider) {
-       // this.provider = provider;
         this.connection = provider.getMySQLConnection();
         comboBox.addItem("CF_Allenatore");
         comboBox.addItem("CF_Autista");
