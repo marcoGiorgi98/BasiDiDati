@@ -7,8 +7,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class Match extends JPanel{
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); 
-
+    final private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); 
     private JTextField cod_match_Field = new JTextField(10); 
     private JTextField teamCodField = new JTextField(10); 
     private JTextField viaField = new JTextField(20); 
@@ -39,9 +38,8 @@ public class Match extends JPanel{
         final JLabel result = new JLabel("Risultato:"); 
         final JLabel CF_preparatore = new JLabel("CF Preparatore:");
         final JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
-        
-        dateFormat.setLenient(false); 
-        dateField = new JFormattedTextField(dateFormat); 
+        this.dateFormat.setLenient(false); 
+        this.dateField = new JFormattedTextField(dateFormat); 
 
         this.add( cod_match_Label);
         this.add(cod_match_Field);

@@ -18,12 +18,11 @@ public class ViewDataPanel  extends JFrame {
     private static final String DB_URL = "polisportiva";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "Lakanoch98!";
-
     private JButton executeButton; 
     private JTable resultTable; 
     private JScrollPane scrollPane; 
     private JFormattedTextField dateField; 
-    JPanel panel = new JPanel(); 
+    private JPanel panel = new JPanel(); 
 
     private JComboBox<String> comboBox = new JComboBox<>();
     private JComboBox<String> comboBoxSports = new JComboBox<>(); 
@@ -31,26 +30,26 @@ public class ViewDataPanel  extends JFrame {
     public ViewDataPanel() {
        setSize(1000, 600);
        setTitle("Visualizza Dati");
-       panel.setLayout(new GridLayout(2, 3)); 
-       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM"); 
-       dateField = new JFormattedTextField(dateFormat); 
+       this.panel.setLayout(new GridLayout(2, 3)); 
+       final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM"); 
+       this.dateField = new JFormattedTextField(dateFormat); 
 
-       JLabel textLabel = new JLabel("Visualizza:"); 
-       comboBox.addItem("Iscritto"); 
-       comboBox.addItem("Allenatore");
-       comboBox.addItem("Autista"); 
-       comboBox.addItem("Preparatore");
-       comboBox.addItem("Squadra"); 
-       comboBox.addItem("Partita"); 
-       comboBox.addItem("Trasferta"); 
-       comboBox.addItem("Allenamento");
-       comboBox.addItem("Fare"); 
-       comboBox.addItem("Pagamenti"); 
+       final JLabel textLabel = new JLabel("Visualizza:"); 
+       this.comboBox.addItem("Iscritto"); 
+       this.comboBox.addItem("Allenatore");
+       this.comboBox.addItem("Autista"); 
+       this.comboBox.addItem("Preparatore");
+       this.comboBox.addItem("Squadra"); 
+       this.comboBox.addItem("Partita"); 
+       this.comboBox.addItem("Trasferta"); 
+       this.comboBox.addItem("Allenamento");
+       this.comboBox.addItem("Fare"); 
+       this.comboBox.addItem("Pagamenti"); 
 
-        comboBoxSports.addItem("Calcio"); 
-        comboBoxSports.addItem("Pallavolo"); 
-        comboBoxSports.addItem("Basket");
-        comboBoxSports.addItem("Baseball"); 
+        this.comboBoxSports.addItem("Calcio"); 
+        this.comboBoxSports.addItem("Pallavolo"); 
+        this.comboBoxSports.addItem("Basket");
+        this.comboBoxSports.addItem("Baseball"); 
 
         comboBox.addActionListener(new ActionListener() {
             @Override
@@ -64,22 +63,19 @@ public class ViewDataPanel  extends JFrame {
         switch (comboBox.getSelectedItem().toString().toLowerCase()) {
             case "partita":executeQueryMatch();break;
             case "pagamenti":executeQueryPay();break;
-                
-        
             default: executeQuery();break;
         }
        
        } ); 
-       resultTable = new JTable();
-       scrollPane = new JScrollPane(resultTable);
-
-       panel.add(new JLabel(""));
-       panel.add(textLabel);
-       panel.add(comboBox);
-       panel.add(comboBoxSports);
-       panel.add(new JLabel("Data :"));
-       panel.add(dateField);
-       comboBoxSports.setVisible(false);
+       this.resultTable = new JTable();
+       this.scrollPane = new JScrollPane(resultTable);
+       this.panel.add(new JLabel(""));
+       this.panel.add(textLabel);
+       this.panel.add(comboBox);
+       this.panel.add(comboBoxSports);
+       this.panel.add(new JLabel("Data :"));
+       this.panel.add(dateField);
+       this.comboBoxSports.setVisible(false);
        add(panel, BorderLayout.NORTH); 
        add(scrollPane, BorderLayout.CENTER); 
        add( executeButton, BorderLayout.SOUTH); 
