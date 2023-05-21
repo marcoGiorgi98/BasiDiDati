@@ -76,7 +76,6 @@ public class Training extends JPanel{
                     statement.executeUpdate("INSERT INTO fare (CodAllenamento, CF_Iscritto)"+
                     "VALUES ('"+cod_training_Field.getText().toUpperCase()+"', '"
                     +giocatore.getText()+"');");
-                   // statement.close();
                 } catch (SQLException e) {
                   e.printStackTrace();
               }
