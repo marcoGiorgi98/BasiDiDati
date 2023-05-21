@@ -22,10 +22,10 @@ public class Team extends JPanel{
 
     private void mainInterface() {
         this.setLayout(new BorderLayout()); 
-        sportSelectionBox.addItem("Calcio");
-        sportSelectionBox.addItem("Basket");
-        sportSelectionBox.addItem("Pallavolo");
-        sportSelectionBox.addItem("BaseBall");
+        this.sportSelectionBox.addItem("Calcio");
+        this.sportSelectionBox.addItem("Basket");
+        this.sportSelectionBox.addItem("Pallavolo");
+        this.sportSelectionBox.addItem("BaseBall");
         JPanel upperPanel = new JPanel(new GridLayout(2, 3));
         upperPanel.add( sportSelectionBox);
         upperPanel.add(new JLabel("Inserisci nome squadra"));
@@ -57,7 +57,7 @@ public class Team extends JPanel{
         playersPanel.setLayout(new GridLayout(40, 1));
 
         try {
-            ResultSet rs = statement.executeQuery("Select * from iscritto");
+            ResultSet rs = statement.executeQuery("Select * from iscritto where CodSquadra is null");
         while(rs.next()){
         
             playersList.add(new JCheckBox(rs.getObject(1).toString()));
