@@ -69,7 +69,7 @@ public class ViewDataPanel  extends JFrame {
        this.panel.add(textLabel);
        this.panel.add(comboBox);
        this.panel.add(comboBoxSports);
-       this.panel.add(new JLabel("Data :"));
+       this.panel.add(new JLabel("Data (yyyy/mm):"));
        this.panel.add(dateField);
        this.comboBoxSports.setVisible(false);
        add(panel, BorderLayout.NORTH); 
@@ -153,6 +153,10 @@ public class ViewDataPanel  extends JFrame {
         try {
             ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
+            if(dateField.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Inserire una data", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             String sSQL = "SELECT * FROM Stipendio"+
             " WHERE MONTH(DataErogazione) = "+dateField.getText().split("/")[1]
             +" AND YEAR(DataErogazione) = "+dateField.getText().split("/")[0];
