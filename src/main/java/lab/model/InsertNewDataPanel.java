@@ -32,6 +32,7 @@ public class InsertNewDataPanel extends JFrame {
     private final JLabel DriverLabel = new JLabel("Numero Patente"); // 
     private final JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); 
     private Match match;
+    private DefaultPanel defaultPanel;
     private Transfert transfert;
     private Training training;
     private Tesseramento tesserament;
@@ -45,6 +46,8 @@ public class InsertNewDataPanel extends JFrame {
        
 
     public InsertNewDataPanel() {
+        this.setSize(400, 700);
+        mainInterface();
         button.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
                 insertNewData();
@@ -58,7 +61,7 @@ public class InsertNewDataPanel extends JFrame {
             }
             
         });
-        mainInterface();
+       
     }
 
     private void mainInterface() {
@@ -73,12 +76,12 @@ public class InsertNewDataPanel extends JFrame {
         this.upperPanel.setLayout(new GridLayout(1, 2));
         this.dateFormat.setLenient(false); 
         this.birthField = new JFormattedTextField(dateFormat); 
+        this.comboBox.addItem("Partita"); 
         this.comboBox.addItem("Allenatore");
         this.comboBox.addItem("Iscritto"); 
         this.comboBox.addItem("Autista"); 
         this.comboBox.addItem("Preparatore"); 
         this.comboBox.addItem("Squadra"); 
-        this.comboBox.addItem("Partita"); 
         this.comboBox.addItem("Trasferta");
         this.comboBox.addItem("Allenamento"); 
         this.comboBox.addItem("Tesseramento"); 
@@ -86,44 +89,11 @@ public class InsertNewDataPanel extends JFrame {
         this.comboBox.setEditable(false); 
         this.upperPanel.add(new JLabel("Figura da inserire"));
         this.upperPanel.add(comboBox); 
-        this.panel.add(new JLabel("Codice Fiscale:"));
-        this.panel.add(cFField);
-        this.panel.add(new JLabel("Nome:")); 
-        this.panel.add(nameField); 
-        this.panel.add(new JLabel("Cognome:"));
-        this.panel.add(surnameField);
-        this.panel.add(new JLabel("Telefono:")); 
-        this.panel.add(phoneField);
-        this.panel.add(new JLabel("Data di nascita (2000/12/27):")); 
-        this.panel.add(birthField); 
-        this.panel.add(new JLabel("Via:"));
-        this.panel.add(viaField); 
-        this.panel.add(new JLabel("Numero:"));
-        this.panel.add(numberField);   
-        this.panel.add(new JLabel("CAP:"));
-        this.panel.add(cityField); 
-        this.panel.add(new JLabel("Città:"));
-        this.panel.add(capField);
-        this.panel.add(DriverLabel); 
-        this.panel.add(driverField); 
-        this.panel.add(tesseraLabel);
-        this.panel.add(codTesseraField);
-        this.panel.add(categoriaLabel);
-        this.panel.add(categoryField);
-        this.panel.add(subscrictionLabel);
-        this.panel.add(subscrictionField);
-        this.subscrictionLabel.setVisible(false);
-        this.subscrictionField.setVisible(false);
-        this.categoryField.setVisible(false);
-        this.categoriaLabel.setVisible(false);
-        this.codTesseraField.setVisible(false);
-        this.tesseraLabel.setVisible(false);
-        this.driverField.setVisible(false);
-        this.DriverLabel.setVisible(false);
+        
         add(panel, BorderLayout.CENTER); 
         add(upperPanel, BorderLayout.NORTH); 
         add(button, BorderLayout.SOUTH); 
-        pack(); 
+        //pack(); 
         setVisible(true); 
     }
 
@@ -185,32 +155,6 @@ public class InsertNewDataPanel extends JFrame {
     }
 
     private void checkComboBoxInput() {
-        if(comboBox.getSelectedItem()=="Autista") {
-            driverField.setVisible(true);
-            DriverLabel.setVisible(true);
-           
-        }
-        else {
-            driverField.setVisible(false);
-            DriverLabel.setVisible(false);
-        }
-        if(comboBox.getSelectedItem()=="Iscritto") {
-        subscrictionLabel.setVisible(true);
-        subscrictionField.setVisible(true);
-        categoryField.setVisible(true);
-        categoriaLabel.setVisible(true);
-        codTesseraField.setVisible(true);
-        tesseraLabel.setVisible(true);   
-        }
-        else {
-            subscrictionLabel.setVisible(false);
-            subscrictionField.setVisible(false);
-            categoryField.setVisible(false);
-            categoriaLabel.setVisible(false);
-            codTesseraField.setVisible(false);
-            tesseraLabel.setVisible(false);   
-        }
-
         switch (comboBox.getSelectedItem().toString()) {
             case "Partita": this.showMatchPanel();break;
             case "Trasferta": this.showTransfertPanel();break;
@@ -218,11 +162,9 @@ public class InsertNewDataPanel extends JFrame {
             case "Tesseramento": this.showTesseramentPanel();break;
             case "Pagamento": this.showPaymentPanel();break;
             case "Squadra": this.showTeamPanel();break;
-            default:
-                break;
+            default:this.showDefaultPanel() ;break;
+                
         }
-        
-        
     }
    
     private void updatePanel() {
@@ -235,6 +177,14 @@ public class InsertNewDataPanel extends JFrame {
         this.remove(centralPanel);
         match = new Match(this.provider);
         add(match, BorderLayout.CENTER); 
+        this.updatePanel();
+    }
+    private void showDefaultPanel() {
+        var centralPanel = this.getContentPane().getComponentAt(this.getContentPane().getWidth()/2,this.getContentPane().getHeight()/2);
+        this.remove(centralPanel);
+        defaultPanel = new DefaultPanel(this.provider);
+        defaultPanel.modifyLabelsVisibility(comboBox.getSelectedItem().toString());
+        add(defaultPanel, BorderLayout.CENTER); 
         this.updatePanel();
     }
     private void showTrainingPanel() {
