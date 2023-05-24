@@ -1,14 +1,10 @@
 package lab.model;
 
 import javax.swing.*;
-
 import lab.db.ConnectionProvider;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
-import java.text.SimpleDateFormat;
 
 public class InsertNewDataPanel extends JFrame {
     private JComboBox<String> comboBox = new JComboBox<>();
@@ -59,17 +55,15 @@ public class InsertNewDataPanel extends JFrame {
         this.comboBox.setEditable(false); 
         this.upperPanel.add(new JLabel("Figura da inserire"));
         this.upperPanel.add(comboBox); 
-        
         add(panel, BorderLayout.CENTER); 
         add(upperPanel, BorderLayout.NORTH); 
         add(button, BorderLayout.SOUTH); 
-        //pack(); 
         setVisible(true); 
     }
 
     public void insertNewData() {
-        final  String selectedTable = comboBox.getSelectedItem().toString();
-        switch (selectedTable) {
+        final  String selectedPerson = comboBox.getSelectedItem().toString();
+        switch (selectedPerson) {
             case "Autista": defaultPanel.addAutista() ;break;
             case "Iscritto": defaultPanel.addIscritto(); ;break;
             case "Squadra": team.callQuery() ;break;
@@ -78,7 +72,7 @@ public class InsertNewDataPanel extends JFrame {
             case "Allenamento": training.callQuery() ;break;
             case "Tesseramento": tesserament.callQuery() ;break;
             case "Pagamento": payment.callQuery() ;break;
-            default:  defaultPanel.addPreparatoreAllenatore(selectedTable) ;
+            default:  defaultPanel.addPreparatoreAllenatore(selectedPerson) ;
                 break;
         }
         
@@ -92,8 +86,7 @@ public class InsertNewDataPanel extends JFrame {
             case "Tesseramento": this.showTesseramentPanel();break;
             case "Pagamento": this.showPaymentPanel();break;
             case "Squadra": this.showTeamPanel();break;
-            default:this.showDefaultPanel() ;break;
-                
+            default:this.showDefaultPanel() ;break;  
         }
     }
    

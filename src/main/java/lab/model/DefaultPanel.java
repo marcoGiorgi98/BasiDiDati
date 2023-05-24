@@ -3,8 +3,6 @@ package lab.model;
 import javax.swing.*;
 import lab.db.ConnectionProvider;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
@@ -27,10 +25,8 @@ public class DefaultPanel extends JPanel{
     private final JLabel categoriaLabel = new JLabel("Categoria:"); 
     private JFormattedTextField subscrictionField = new JFormattedTextField(dateFormat); 
     private JFormattedTextField birthField; 
-   
     private final JLabel DriverLabel = new JLabel("Numero Patente"); 
     private final JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); 
-    private ConnectionProvider provider = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
     private  Connection connection;
     private Statement statement;
     
@@ -40,7 +36,6 @@ public class DefaultPanel extends JPanel{
     }
 
     private void mainInterface() {
-        this.connection= provider.getMySQLConnection();
         try {
             this.statement = connection.createStatement();
         } catch (SQLException e) {
@@ -148,7 +143,7 @@ public class DefaultPanel extends JPanel{
        
     }
 
-    public void addPreparatoreAllenatore(String person) {
+    public void addPreparatoreAllenatore(final String person) {
         try {
              this.statement.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
             "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
@@ -158,6 +153,5 @@ public class DefaultPanel extends JPanel{
        } catch (SQLException e) {
            e.printStackTrace();
        }
-       
     }
 }
