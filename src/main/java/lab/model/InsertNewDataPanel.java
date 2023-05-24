@@ -11,26 +11,8 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class InsertNewDataPanel extends JFrame {
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd"); 
     private JComboBox<String> comboBox = new JComboBox<>();
-    private JTextField cFField = new JTextField(10); 
-    private JTextField nameField = new JTextField(10); 
-    private JTextField surnameField = new JTextField(10); 
-    private JTextField phoneField = new JTextField(10); 
-    private JTextField viaField = new JTextField(20);
-    private JTextField cityField = new JTextField(10);
-    private JTextField numberField = new JTextField(10); 
-    private JTextField capField = new JTextField(5); 
-    private JTextField driverField = new JTextField(10); 
-    private JTextField codTesseraField = new JTextField(10); 
-    private JTextField categoryField = new JTextField(10); 
-    private final JLabel tesseraLabel = new JLabel("Codice Tessera"); // 
-    private final JLabel categoriaLabel = new JLabel("Categoria"); // 
-    private JFormattedTextField subscrictionField = new JFormattedTextField(dateFormat); 
-    private JFormattedTextField birthField; 
-    private final JButton button = new JButton("Invia"); 
-    private final JLabel DriverLabel = new JLabel("Numero Patente"); // 
-    private final JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); 
+    private final JButton button = new JButton("Aggiungi Dati"); 
     private Match match;
     private DefaultPanel defaultPanel;
     private Transfert transfert;
@@ -41,10 +23,7 @@ public class InsertNewDataPanel extends JFrame {
     private JPanel panel = new JPanel(); 
     private JPanel upperPanel= new JPanel();
     private ConnectionProvider provider = new ConnectionProvider("root", "Lakanoch98!", "polisportiva");
-    private  Connection connection;
-    private Statement statement;
        
-
     public InsertNewDataPanel() {
         this.setSize(400, 700);
         mainInterface();
@@ -61,21 +40,12 @@ public class InsertNewDataPanel extends JFrame {
             }
             
         });
-       
     }
 
     private void mainInterface() {
         setTitle("Inserisci nuovi Dati");
-        this.connection= provider.getMySQLConnection();
-        try {
-            this.statement = connection.createStatement();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         this.panel.setLayout(new GridLayout(14, 2)); 
         this.upperPanel.setLayout(new GridLayout(1, 2));
-        this.dateFormat.setLenient(false); 
-        this.birthField = new JFormattedTextField(dateFormat); 
         this.comboBox.addItem("Partita"); 
         this.comboBox.addItem("Allenatore");
         this.comboBox.addItem("Iscritto"); 
@@ -100,58 +70,18 @@ public class InsertNewDataPanel extends JFrame {
     public void insertNewData() {
         final  String selectedTable = comboBox.getSelectedItem().toString();
         switch (selectedTable) {
-            case "Autista": addAutista() ;break;
-            case "Iscritto": addIscritto(); ;break;
+            case "Autista": defaultPanel.addAutista() ;break;
+            case "Iscritto": defaultPanel.addIscritto(); ;break;
             case "Squadra": team.callQuery() ;break;
             case "Partita": match.callQuery() ;break;
             case "Trasferta": transfert.callQuery() ;break;
             case "Allenamento": training.callQuery() ;break;
             case "Tesseramento": tesserament.callQuery() ;break;
             case "Pagamento": payment.callQuery() ;break;
-            default:  addPreparatoreAllenatore(selectedTable) ;
+            default:  defaultPanel.addPreparatoreAllenatore(selectedTable) ;
                 break;
         }
         
-    }
-
-    private void addIscritto() {
-        try {
-            this.statement.executeUpdate(
-         "INSERT INTO iscritto (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono,Categoria,DataIscrizione,CodTessera)"+
-        "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+birthField.getText()
-        +"', '"+viaField.getText()+"', '"+numberField.getText()
-        +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+categoryField.getText().toUpperCase()
-        +"', '"+subscrictionField.getText()+"', '"+codTesseraField.getText().toUpperCase()+"');");
-
-        } catch (SQLException e) {
-        e.printStackTrace();
-        }
-    }
-
-    private void addAutista() {
-        try {
-            this.statement.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono, CodPatente)"+
-            "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
-            birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
-            +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+driverField.getText()+"');");
-           
-       } catch (SQLException e) {
-           e.printStackTrace();
-       }
-       
-    }
-
-    private void addPreparatoreAllenatore(String person) {
-        try {
-             this.statement.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
-            "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
-            birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
-            +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"');");
-           
-       } catch (SQLException e) {
-           e.printStackTrace();
-       }
-       
     }
 
     private void checkComboBoxInput() {

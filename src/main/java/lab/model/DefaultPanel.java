@@ -120,5 +120,44 @@ public class DefaultPanel extends JPanel{
             paymentLabel.setVisible(false); 
         }
     }
+      
+    public void addIscritto() {
+        try {
+            this.statement.executeUpdate(
+         "INSERT INTO iscritto (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono,Categoria,DataIscrizione,CodTessera)"+
+        "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+birthField.getText()
+        +"', '"+viaField.getText()+"', '"+numberField.getText()
+        +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+categoryField.getText().toUpperCase()
+        +"', '"+subscrictionField.getText()+"', '"+codTesseraField.getText().toUpperCase()+"');");
+
+        } catch (SQLException e) {
+        e.printStackTrace();
+        }
+    }
+
+    public void addAutista() {
+        try {
+            this.statement.executeUpdate("INSERT INTO autista (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono, CodPatente)"+
+            "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
+            birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
+            +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+driverField.getText()+"');");
+           
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
        
+    }
+
+    public void addPreparatoreAllenatore(String person) {
+        try {
+             this.statement.executeUpdate("INSERT INTO "+person +" (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
+            "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+
+            birthField.getText()+"', '"+viaField.getText()+"', '"+numberField.getText()
+            +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"');");
+           
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       
+    }
 }
