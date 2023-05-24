@@ -66,8 +66,6 @@ public class Match extends JPanel{
                +"', '"+viaField.getText()+"', '"+capField.getText()
                +"', '"+numberField.getText()+"', '"+avversarioField.getText()
                +"', '"+resultField.getText()+"', '"+cf_PreparatoreField.getText().toUpperCase()+"');");
-            //statement.close();
-            //connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
