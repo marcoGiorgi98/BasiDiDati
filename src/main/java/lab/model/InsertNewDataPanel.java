@@ -44,7 +44,7 @@ public class InsertNewDataPanel extends JFrame {
     private Statement statement;
        
 
-    public InsertNewDataPanel(int width, int height) {
+    public InsertNewDataPanel() {
         button.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
                 insertNewData();
@@ -58,10 +58,10 @@ public class InsertNewDataPanel extends JFrame {
             }
             
         });
-        mainInterface(width, height);
+        mainInterface();
     }
 
-    private void mainInterface(int width, int height) {
+    private void mainInterface() {
         setTitle("Inserisci nuovi Dati");
         this.connection= provider.getMySQLConnection();
         try {

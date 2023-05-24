@@ -54,7 +54,7 @@ public class ViewDataPanel  extends JFrame {
             }
             
         });
-       executeButton = new JButton("Execute");
+       executeButton = new JButton("Mostra");
        executeButton.addActionListener(e ->{
         switch (comboBox.getSelectedItem().toString().toLowerCase()) {
             case "partita":executeQueryMatch();break;
@@ -94,8 +94,8 @@ public class ViewDataPanel  extends JFrame {
                 rs = pS.executeQuery();
             }
            else if(comboBox.getSelectedItem().toString().toLowerCase().equals("squadra")) {
-                sSQL = "SELECT CF , I.Nome , Cognome , S.Nome as Squadra ,S.CodSquadra, S.Sport"+
-               " from iscritto I JOIN squadra S ON I.CodSquadra = S.CodSquadra" ;
+                sSQL = "SELECT CodSquadra ,S.Nome, S.Sport,S.CF_Allenatore,A.Nome,A.Cognome"+
+               " from Squadra as S Join allenatore as A ON S.CF_Allenatore = A.CF" ;
                 pS = conn.prepareStatement(sSQL);
                 rs = pS.executeQuery();
               

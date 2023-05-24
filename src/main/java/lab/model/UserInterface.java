@@ -29,7 +29,7 @@ public class UserInterface extends JFrame{
         });
         insertDataBtn.addActionListener(new ActionListener() { 
             public void actionPerformed(ActionEvent e) {
-                InsertNewDataPanel dataPanel = new InsertNewDataPanel(getWidth(),getHeight());
+                InsertNewDataPanel dataPanel = new InsertNewDataPanel();
             }
         });
 

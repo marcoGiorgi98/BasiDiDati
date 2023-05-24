@@ -89,7 +89,7 @@ public class Team extends JPanel{
         });
         try {
             this.statement.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
-            "VALUES ('"+teamCode.getText()+"', '"+teamName.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString().toUpperCase()
+            "VALUES ('"+teamCode.getText().toUpperCase()+"', '"+teamName.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString().toUpperCase()
             +"', '"+coachList.stream().filter(x -> x.isSelected()).findFirst().get().getText() +"');");
            
        } catch (SQLException e) {

@@ -28,6 +28,8 @@ public final class ConnectionProvider {
      * @throws IllegalStateException if the connection could not be establish
      */
     public Connection getMySQLConnection() {
+       
+        
         final String dbUri = "jdbc:mysql://localhost:3306/" + this.dbName;
         try {
             // Thanks to the JDBC DriverManager we can get a connection to the database
