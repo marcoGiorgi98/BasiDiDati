@@ -11,7 +11,7 @@ public class Tesseramento extends JPanel{
     private JTextField cod_tessermentoField = new JTextField(10); 
     private JTextField categoryField = new JTextField(10); 
     private JTextField priceField = new JTextField(5); 
-    private JTextField cField= new JTextField(16); 
+    private JComboBox<String> comboBoxPlayers = new JComboBox<>();
     private JFormattedTextField dateField; 
     private  Connection connection;
     Statement statement;
@@ -19,7 +19,8 @@ public class Tesseramento extends JPanel{
        
     public Tesseramento(ConnectionProvider provider) {
         this.connection = provider.getMySQLConnection();
-        mainInterface();
+        this.updateComboBox();
+        this.mainInterface();
     }
 
     private void mainInterface() {
@@ -36,7 +37,7 @@ public class Tesseramento extends JPanel{
         this.add(new JLabel("Costo €:")); 
         this.add(priceField); 
         this.add(new JLabel("CF Iscritto:")); 
-        this.add(cField); 
+        this.add(comboBoxPlayers);
         setVisible(true); 
       
     }
@@ -46,7 +47,7 @@ public class Tesseramento extends JPanel{
             statement.executeUpdate("Update iscritto SET CodTessera = "+"'"
             +cod_tessermentoField.getText().toUpperCase()+"' ,DataIscrizione= '"
             +dateField.getText()+"', Categoria= '"+ categoryField.getText().toUpperCase()+"' " +
-            "Where CF = '"+cField.getText().toUpperCase()+"'");
+            "Where CF = '"+comboBoxPlayers.getSelectedItem().toString().toUpperCase()+"'");
             
 
             statement.executeUpdate(
@@ -54,7 +55,19 @@ public class Tesseramento extends JPanel{
                "VALUES ('"+dateField.getText()
                +"', '"+categoryField.getText().toUpperCase()
                +"', '"+priceField.getText()
-               +"', '"+cField.getText()+"');");
+               +"', '"+comboBoxPlayers.getSelectedItem().toString().toUpperCase()+"');");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void updateComboBox() {
+        try {
+            statement = connection.createStatement();
+            r = statement.executeQuery("select * from Iscritto where CodTessera is null");
+            while (r.next()) {
+                comboBoxPlayers.addItem(r.getString("CF"));
+            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }

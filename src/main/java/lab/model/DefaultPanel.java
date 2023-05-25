@@ -17,7 +17,7 @@ public class DefaultPanel extends JPanel{
     private JTextField numberField = new JTextField(10); 
     private JTextField capField = new JTextField(5); 
     private JTextField driverField = new JTextField(10); 
-    
+
 
  
     private JFormattedTextField birthField; 
