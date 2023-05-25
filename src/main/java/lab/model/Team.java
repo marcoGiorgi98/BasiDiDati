@@ -57,7 +57,8 @@ public class Team extends JPanel{
         playersPanel.setLayout(new GridLayout(40, 1));
 
         try {
-            ResultSet rs = statement.executeQuery("Select * from iscritto where CodSquadra is null");
+            ResultSet rs = statement.executeQuery(
+                "Select * from iscritto where CodSquadra is null and CodTessera is not null");
         while(rs.next()){
         
             playersList.add(new JCheckBox(rs.getObject(1).toString()));
@@ -89,7 +90,8 @@ public class Team extends JPanel{
         });
         try {
             this.statement.executeUpdate("INSERT INTO squadra (CodSquadra,Nome, Sport, CF_Allenatore)"+
-            "VALUES ('"+teamCode.getText().toUpperCase()+"', '"+teamName.getText()+"', '"+ sportSelectionBox.getSelectedItem().toString().toUpperCase()
+            "VALUES ('"+teamCode.getText().toUpperCase()+"', '"+teamName.getText()+"', '"
+            + sportSelectionBox.getSelectedItem().toString().toUpperCase()
             +"', '"+coachList.stream().filter(x -> x.isSelected()).findFirst().get().getText() +"');");
            
        } catch (SQLException e) {
