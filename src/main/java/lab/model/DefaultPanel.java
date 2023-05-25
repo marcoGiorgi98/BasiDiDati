@@ -17,16 +17,12 @@ public class DefaultPanel extends JPanel{
     private JTextField numberField = new JTextField(10); 
     private JTextField capField = new JTextField(5); 
     private JTextField driverField = new JTextField(10); 
-    private JTextField codTesseraField = new JTextField(10); 
-    private JTextField categoryField = new JTextField(10); 
-    private final JLabel tesseraLabel = new JLabel("Codice Tessera:"); 
-    private JTextField paymentField = new JTextField(5); 
-    private final JLabel paymentLabel = new JLabel("Cifra:"); 
-    private final JLabel categoriaLabel = new JLabel("Categoria:"); 
-    private JFormattedTextField subscrictionField = new JFormattedTextField(dateFormat); 
+    
+
+ 
     private JFormattedTextField birthField; 
     private final JLabel DriverLabel = new JLabel("Numero Patente"); 
-    private final JLabel subscrictionLabel = new JLabel("Data Iscrizione (2000/12/27):"); 
+    
     private  Connection connection;
     private Statement statement;
     
@@ -64,22 +60,8 @@ public class DefaultPanel extends JPanel{
         this.add(capField);
         this.add(DriverLabel); 
         this.add(driverField); 
-        this.add(tesseraLabel);
-        this.add(codTesseraField);
-        this.add(categoriaLabel);
-        this.add(categoryField);
-        this.add(subscrictionLabel);
-        this.add(subscrictionField);
-        this.add(paymentLabel);
-        this.add(paymentField);
-        this.paymentField.setVisible(false);
-        this.paymentLabel.setVisible(false);
-        this.subscrictionLabel.setVisible(false);
-        this.subscrictionField.setVisible(false);
-        this.categoryField.setVisible(false);
-        this.categoriaLabel.setVisible(false);
-        this.codTesseraField.setVisible(false);
-        this.tesseraLabel.setVisible(false);
+        
+        
         this.driverField.setVisible(false);
         this.DriverLabel.setVisible(false);
         setVisible(true); 
@@ -94,38 +76,18 @@ public class DefaultPanel extends JPanel{
             driverField.setVisible(false);
             DriverLabel.setVisible(false);
         }
-        if(parameter=="Iscritto") {
-        subscrictionLabel.setVisible(true);
-        subscrictionField.setVisible(true);
-        categoryField.setVisible(true);
-        categoriaLabel.setVisible(true);
-        codTesseraField.setVisible(true);
-        tesseraLabel.setVisible(true);  
-        paymentField.setVisible(true);
-        paymentLabel.setVisible(true); 
-        }
-        else {
-            subscrictionLabel.setVisible(false);
-            subscrictionField.setVisible(false);
-            categoryField.setVisible(false);
-            categoriaLabel.setVisible(false);
-            codTesseraField.setVisible(false);
-            tesseraLabel.setVisible(false);   
-            paymentField.setVisible(false);
-            paymentLabel.setVisible(false); 
-        }
+        
     }
       
     public void addIscritto() {
         try {
             this.statement.executeUpdate(
-         "INSERT INTO iscritto (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono,Categoria,DataIscrizione,CodTessera)"+
+         "INSERT INTO iscritto (CF, Nome, Cognome, DataNascita, Via, Numero, Cap, Città,Telefono)"+
         "VALUES ('"+cFField.getText().toUpperCase()+"', '"+nameField.getText()+"', '"+surnameField.getText()+"', '"+birthField.getText()
         +"', '"+viaField.getText()+"', '"+numberField.getText()
-        +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"', '"+categoryField.getText().toUpperCase()
-        +"', '"+subscrictionField.getText()+"', '"+codTesseraField.getText().toUpperCase()+"');");
+        +"', '"+capField.getText()+"', '"+cityField.getText()+"', '"+phoneField.getText()+"');");
 
-        } catch (SQLException e) {
+        } catch (SQLException e) {   
         e.printStackTrace();
         }
     }

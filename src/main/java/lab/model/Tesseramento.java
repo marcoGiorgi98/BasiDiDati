@@ -24,7 +24,7 @@ public class Tesseramento extends JPanel{
 
     private void mainInterface() {
         this.setLayout(new GridLayout(14, 2));  
-        JLabel dateLabel = new JLabel("Data (2000/12/27):"); 
+        JLabel dateLabel = new JLabel("Data Iscrizione (2000/12/27):"); 
         dateFormat.setLenient(false); 
         dateField = new JFormattedTextField(dateFormat); 
         this.add(new JLabel("Codice Tessera:"));
@@ -38,13 +38,20 @@ public class Tesseramento extends JPanel{
         this.add(new JLabel("CF Iscritto:")); 
         this.add(cField); 
         setVisible(true); 
+      
     }
     public void callQuery() {
         try {
             statement = connection.createStatement();
+            statement.executeUpdate("Update iscritto SET CodTessera = "+"'"
+            +cod_tessermentoField.getText().toUpperCase()+"' ,DataIscrizione= '"
+            +dateField.getText()+"', Categoria= '"+ categoryField.getText().toUpperCase()+"' " +
+            "Where CF = '"+cField.getText().toUpperCase()+"'");
+            
+
             statement.executeUpdate(
-                "INSERT INTO Tesseramento (CodTesseramento, Data, Categoria,Prezzo,CF)"+
-               "VALUES ('"+cod_tessermentoField.getText().toUpperCase()+"', '"+dateField.getText()
+                "INSERT INTO Tesseramento (Data, Categoria,Prezzo,CF)"+
+               "VALUES ('"+dateField.getText()
                +"', '"+categoryField.getText().toUpperCase()
                +"', '"+priceField.getText()
                +"', '"+cField.getText()+"');");
