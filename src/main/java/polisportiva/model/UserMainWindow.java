@@ -1,15 +1,15 @@
-package lab.model;
+package polisportiva.model;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class UserInterface extends JFrame{
+public class UserMainWindow extends JFrame{
     private JButton insertDataBtn = new JButton("Inserisci nuovi dati");
     private JButton viewDataBtn = new JButton("Visualizza dati");
     private JButton closeButton = new JButton("Chiudi programma");
 
-    public UserInterface() {
+    public UserMainWindow() {
         mainInterface();
     }
 

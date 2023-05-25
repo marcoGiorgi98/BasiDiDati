@@ -1,6 +1,6 @@
-package lab.model;
+package polisportiva.model;
 import javax.swing.*;
-import lab.db.ConnectionProvider;
+import polisportiva.db.ConnectionProvider;
 import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -56,6 +56,7 @@ public class Tesseramento extends JPanel{
                +"', '"+categoryField.getText().toUpperCase()
                +"', '"+priceField.getText()
                +"', '"+comboBoxPlayers.getSelectedItem().toString().toUpperCase()+"');");
+            statement.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }

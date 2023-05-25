@@ -1,7 +1,7 @@
-package lab.model;
+package polisportiva.model;
 
 import javax.swing.*;
-import lab.db.ConnectionProvider;
+import polisportiva.db.ConnectionProvider;
 import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -58,7 +58,7 @@ public class Pay extends JPanel{
                +cfField.getText().toUpperCase()
                +"');");   
             statement.close();
-            connection.close();
+          
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }

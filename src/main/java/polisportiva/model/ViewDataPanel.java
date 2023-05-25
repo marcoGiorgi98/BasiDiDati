@@ -1,11 +1,11 @@
-package lab.model;
+package polisportiva.model;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import lab.db.ConnectionProvider;
+import polisportiva.db.ConnectionProvider;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,13 +19,14 @@ public class ViewDataPanel  extends JFrame {
     private JScrollPane scrollPane; 
     private JFormattedTextField dateField; 
     private JPanel panel = new JPanel(); 
-
+    private ConnectionProvider prov;
     private JComboBox<String> comboBox = new JComboBox<>();
     private JComboBox<String> comboBoxSports = new JComboBox<>(); 
 
     public ViewDataPanel() {
        setSize(1000, 600);
        setTitle("Visualizza Dati");
+       prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
        this.panel.setLayout(new GridLayout(2, 3)); 
        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM"); 
        this.dateField = new JFormattedTextField(dateFormat); 
@@ -39,7 +40,7 @@ public class ViewDataPanel  extends JFrame {
        this.comboBox.addItem("Partita"); 
        this.comboBox.addItem("Trasferta"); 
        this.comboBox.addItem("Allenamento");
-       this.comboBox.addItem("Fare"); 
+       this.comboBox.addItem("Presenze Allenamenti"); 
        this.comboBox.addItem("Pagamenti"); 
 
         this.comboBoxSports.addItem("Calcio"); 
@@ -59,6 +60,7 @@ public class ViewDataPanel  extends JFrame {
         switch (comboBox.getSelectedItem().toString().toLowerCase()) {
             case "partita":executeQueryMatch();break;
             case "pagamenti":executeQueryPay();break;
+            case "presenze allenamenti": this.executeQueryTrainingPlayer();break;
             default: executeQuery();break;
         }
        
@@ -83,7 +85,6 @@ public class ViewDataPanel  extends JFrame {
         ResultSet rs;
 
         try {
-            ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
         
             String sSQL = "SELECT * FROM ?";
@@ -106,6 +107,8 @@ public class ViewDataPanel  extends JFrame {
             }
             
             this.showResult(rs);
+            conn.close();
+            pS.close();
                
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -114,7 +117,6 @@ public class ViewDataPanel  extends JFrame {
 
     private void executeQueryMatch() {
         try {
-            ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
             String sSQL = "SELECT P.CodPartita,P.CodSquadra,P.Data,P.Città,P.Via"
             +",P.Cap,P.Numero,P.Avversario,P.CF_Preparatore,S.CF_Allenatore,P.Risultato"+
@@ -123,6 +125,8 @@ public class ViewDataPanel  extends JFrame {
             pS.setString(1,comboBoxSports.getSelectedItem().toString().toLowerCase());
             ResultSet rs = pS.executeQuery();
            this.showResult(rs);
+           conn.close();
+           pS.close();
                
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
@@ -151,7 +155,6 @@ public class ViewDataPanel  extends JFrame {
 
     private void executeQueryPay() {
         try {
-            ConnectionProvider prov = new ConnectionProvider(DB_USER , DB_PASSWORD, DB_URL);
             Connection conn= prov.getMySQLConnection();
             if(dateField.getText().equals("")) {
                 JOptionPane.showMessageDialog(this, "Inserire una data", "Error", JOptionPane.ERROR_MESSAGE);
@@ -163,10 +166,30 @@ public class ViewDataPanel  extends JFrame {
             PreparedStatement pS = conn.prepareStatement(sSQL);
             ResultSet rs = pS.executeQuery();
            this.showResult(rs);
+           conn.close();
+           pS.close();
                
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void executeQueryTrainingPlayer() {
+        Statement pS;
+        ResultSet rs;
+        Connection conn= prov.getMySQLConnection();
+        try {
+            pS = conn.createStatement();
+            rs = pS.executeQuery(
+                "Select * from fare");
+            this.showResult(rs);
+            conn.close();
+            pS.close();
+               
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
+        }
+      
     }
 
     private void checkComboBoxInput() {

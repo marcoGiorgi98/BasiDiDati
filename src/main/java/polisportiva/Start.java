@@ -1,12 +1,12 @@
-package lab;
+package polisportiva;
 
 import java.sql.SQLException;
-import lab.model.UserInterface;
+import polisportiva.model.UserMainWindow;
 
 public class Start {
 
     public static void main(String[] args) throws SQLException {  
-        final UserInterface user =new UserInterface();
+        final UserMainWindow user =new UserMainWindow();
     }
 
 }

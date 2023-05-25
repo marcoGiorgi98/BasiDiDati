@@ -1,7 +1,7 @@
-package lab.model;
+package polisportiva.model;
 
 import javax.swing.*;
-import lab.db.ConnectionProvider;
+import polisportiva.db.ConnectionProvider;
 import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -66,6 +66,7 @@ public class Match extends JPanel{
                +"', '"+viaField.getText()+"', '"+capField.getText()
                +"', '"+numberField.getText()+"', '"+avversarioField.getText()
                +"', '"+resultField.getText()+"', '"+cf_PreparatoreField.getText().toUpperCase()+"');");
+            statement.close();       
         } catch (SQLException e) {
             e.printStackTrace();
         }

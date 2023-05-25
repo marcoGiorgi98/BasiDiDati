@@ -1,4 +1,4 @@
-package lab.db;
+package polisportiva.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,7 +1,7 @@
-package lab.model;
+package polisportiva.model;
 
 import javax.swing.*;
-import lab.db.ConnectionProvider;
+import polisportiva.db.ConnectionProvider;
 import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;

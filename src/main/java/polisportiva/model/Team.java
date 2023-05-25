@@ -1,6 +1,6 @@
-package lab.model;
+package polisportiva.model;
 import javax.swing.*;
-import lab.db.ConnectionProvider;
+import polisportiva.db.ConnectionProvider;
 import java.awt.*;
 import java.sql.*;
 import java.util.LinkedList;
@@ -93,7 +93,7 @@ public class Team extends JPanel{
             "VALUES ('"+teamCode.getText().toUpperCase()+"', '"+teamName.getText()+"', '"
             + sportSelectionBox.getSelectedItem().toString().toUpperCase()
             +"', '"+coachList.stream().filter(x -> x.isSelected()).findFirst().get().getText() +"');");
-           
+          
        } catch (SQLException e) {
            e.printStackTrace();
        }
